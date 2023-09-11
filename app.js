@@ -174,7 +174,7 @@ app.get("/secrets/:postId", function(req, res){
       });
     });
 
-  });
+  }); // no significance
 
 // route for user logout
 app.get("/signout", (req, res) => {
