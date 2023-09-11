@@ -4,11 +4,9 @@ const passport = require("passport")
 const LocalStrategy = require("passport-local")
 const passportLocalMongoose = require("passport-local-mongoose")
 
-// Connecting to the DB
-mongoose.connect("mongodb://127.0.0.1:27017/JournlDB",  { useUnifiedTopology:true});
+mongoose.connect("mongodb://127.0.0.1:27017/InterXviewDB",  { useUnifiedTopology:true});
 
-
-// Creation of schema
+// user document schema
 const userSchema = new mongoose.Schema({
     username:{
         type: String
@@ -17,6 +15,22 @@ const userSchema = new mongoose.Schema({
         type: String
     }, 
     password: {
+        type: String
+    }
+});
+
+// interview experience document schema
+const experienceSchema = new mongoose.Schema({
+    title: {
+        type: String
+    },
+    content: {
+        type: String
+    },
+    feedback: {
+        type: String
+    },
+    date: {
         type: String
     }
 });
@@ -33,6 +47,11 @@ userSchema.methods.comparePassword = function(plaintext, callback) {
     return callback(null, bcrypt.compareSync(plaintext, this.password));
 };
 
-const userModel = mongoose.model('user',userSchema)
- 
-module.exports = userModel
+const userModel = mongoose.model('user', userSchema);
+
+const experienceModel = mongoose.model('experience', experienceSchema);
+
+module.exports = {
+    userModel,
+    experienceModel
+};

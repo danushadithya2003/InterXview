@@ -7,7 +7,8 @@ const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const session = require("express-session");
-const User = require("./models/Main");
+const { userModel, experienceModel } = require("./models/Main");
+// const Experience = require("./models.Main")
 var cookieParser = require("cookie-parser");
 const saltRounds = 6;
 
@@ -22,7 +23,7 @@ app.use(cookieParser());
 
 app.use(
   session({
-    key: "user_sid",
+    key: "user_sid",  
     secret: "somerandonstuffs",
     resave: false,
     saveUninitialized: false,
@@ -47,16 +48,6 @@ var sessionChecker = (req, res, next) => {
     next();
   }
 };
-
-//Journal Schema
-const journalSchema = new mongoose.Schema({
-  title: String,
-  content: String,
-  feedback: String,
-  date: String
-});
-
-const Journal = mongoose.model("Journal", journalSchema);
 
 //Date value Generation
 var today = new Date();
@@ -85,8 +76,7 @@ app
     res.render("signup");
   })
   .post((req, res) => {
-
-    var user = new User({
+    var user = new userModel({
       username: req.body.username,
       email: req.body.email,
       password:req.body.password,
@@ -96,8 +86,8 @@ app
         res.redirect("/signup");
       } else {
           console.log(docs)
-        req.session.user = docs;
-        res.redirect("/main");
+          req.session.user = docs;
+          res.redirect("/main");
       }
     });
   });
@@ -113,12 +103,12 @@ app
       var password = req.body.password;
 
       try {
-        var user = await User.findOne({ email: email }).exec();
-        if(!user) {
+        var user = await userModel.findOne({ email: email }).exec();
+        if (!user) {
             res.redirect("/signin");
         }
         user.comparePassword(password, (error, match) => {
-            if(!match) {
+            if (!match) {
               res.render("signin");
             }
         });
@@ -134,11 +124,10 @@ app
 // route for user's dashboard
 app.get("/main", (req, res) => {
   if (req.session.user && req.cookies.user_sid) {
-    Journal.find({}, (err,result) => {
-      if(err){
+    experienceModel.find({}, (err,result) => {
+      if (err) {
         console.log(err)
-      }
-      else{
+      } else {
         res.render("main", {memories: result})
       }
     })
@@ -159,15 +148,15 @@ app.get("/compose", (req, res) => {
 
 // Post Compose
 app.post("/compose", function(req, res) {   
-  const journ = new Journal({
+  const exp = new experienceModel({
       title: req.body.postTitle,
       content: req.body.postBody,
       feedback:req.body.feedBack,
       date: today
     });
 
-    journ.save(function(err){
-      if (!err){
+    exp.save(function(err){
+      if (!err) {
           res.redirect("/main");
       }
     });
