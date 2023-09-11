@@ -1,0 +1,46 @@
+<%- include("partials/header_1") -%>
+
+<h2 id="text_Top">Write your Experience here !</h2>
+
+<div class="form-width container">
+    <form action="/compose" method="post">
+      <div class="form-group mb-4">
+        <label for="">Title</label>
+        <input type="text" class="form-control" name="postTitle" />
+      </div>
+      
+      <div class="form-group mb-4">
+        <label for="">Date</label>
+        <input type="text" class="form-control" name="form-date" disabled value="<%= todayDate %>"/>
+      </div>
+
+      <div class="form-group mb-4">
+        <label for="sel1" class="form-label">The Interview was</label>
+        <select class="form-select form-control" id="sel1" name="feedBack">
+          <option>😂Very Easy!</option>
+          <option selected>🙂Easy!</option>
+          <option>😯Intermediate</option>
+          <option>😡Hard</option>
+          <option>😢Very Hard</option>
+          <option>❤️Selected</option>
+          <option>😞Disappointment!</option>
+        </select>
+      </div>
+  
+      <div class="form-group mb-4">
+        <label for="">Describe It</label>
+        <textarea
+          type="text"
+          class="form-control"
+          name="postBody"
+          rows="4"
+          cols="30"
+        ></textarea>
+      </div>
+      <div class="but">
+        <button class="btn btn-success btn-md" type="submit " name="buton ">
+          Publish your experience
+        </button>
+      </div>
+    </form>
+  </div>

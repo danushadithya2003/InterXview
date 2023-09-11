@@ -1,0 +1,34 @@
+{
+  "name": "inter-x-view",
+  "version": "1.0.0",
+  "description": "Interview sharing Application using MongoDB, NodeJS, ExpressJS, EJS and so on",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Naveen Varatharaj",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.2",
+    "jquery": "^3.6.0",
+    "mongoose": "^7.0.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.20",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^7.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danushadithya2003/InterXview.git"
+  },
+  "bugs": {
+    "url": "https://github.com/danushadithya2003/InterXview.git/issues"
+  },
+  "homepage": "https://github.com/danushadithya2003/InterXview.git#readme"
+}
