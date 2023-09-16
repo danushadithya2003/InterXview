@@ -77,7 +77,6 @@ router.route("/signin")
                 }
 
                 req.session.user = user;
-
                 res.redirect("/main");
             });
         } catch (error) {
@@ -108,7 +107,8 @@ router.get("/explore", async (req, res) => {
     try {
         if (req.session.user && req.cookies.user_sid) {
             const experiences = await experienceModel.find({}).exec();
-            res.render("explore", { experiences });
+            const username = req.session.user.username
+            res.render("explore", { experiences, username });
         } else {
             res.redirect("/signin");
         }
@@ -125,7 +125,8 @@ router.get("/:companyId/experiences", async (req, res) => {
         if (req.session.user && req.cookies.user_sid) {
             const companyId = req.params.companyId;
             const experiences = await experienceModel.find({ companyKey: companyId }).exec();
-            res.render("experience", { experiences });
+            const username = req.session.user.username
+            res.render("experience", { experiences, username });
         } else {
             res.redirect("/signin");
         }
