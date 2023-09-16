@@ -16,15 +16,26 @@ const userSchema = new mongoose.Schema({
 
 // Interview experience document schema
 const experienceSchema = new mongoose.Schema({
-    company: String,    
+    companyKey: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company"
+    },    
     position: String,
-    feedback: String, 
+    feedback: String,
+    result: String, 
     content: String,  
     date: String,
-    user: {
+    userKey: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }
+});
+
+// Company document schema
+const companySchema = new mongoose.Schema({
+    companyName: String,
+    logoURL: String,
+    description: String
 });
 
 userSchema.pre("save", async function (next) {
@@ -51,8 +62,10 @@ userSchema.methods.comparePassword = async function(plaintext, callback) {
 
 const userModel = mongoose.model('user', userSchema);
 const experienceModel = mongoose.model('experience', experienceSchema);
+const companyModel = mongoose.model('company', companySchema);
 
 module.exports = {
     userModel,
-    experienceModel
+    experienceModel,
+    companyModel
 };
