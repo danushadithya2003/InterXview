@@ -233,3 +233,45 @@ th{
   width: 90%;
 }
 }
+
+/* Offer staus radio button */
+.radio-options {
+  display: flex;
+  justify-content: flex-start; 
+  width: 100%;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center; 
+  cursor: pointer;
+  margin-right: 20px; 
+}
+
+.radio-option input[type="radio"] {
+  display: none;
+}
+
+.radio-label {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.radio-option input[type="radio"]:checked + .radio-label {
+  background-color: #e0e0e0; 
+  border-color: #999; 
+  color: #333;
+
+  &.offered {
+    background-color: rgb(43, 170, 43);
+    border-color: green;
+    color: white;
+  }
+
+  &.rejected {
+    background-color: rgb(228, 77, 77);
+    border-color: red;
+    color: white;
+  }
+}

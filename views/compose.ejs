@@ -1,45 +1,57 @@
 <%- include("partials/header_1") -%>
 
-<h2 id="text_Top">Write your Experience here !</h2>
+  <h2 id="text_Top">Write your Interview Experience here !</h2>
 
-<div class="form-width container">
+  <div class="form-width container">
     <form action="/compose" method="post">
-      <div class="form-group mb-4">
-        <label for="">Title</label>
-        <input type="text" class="form-control" name="postTitle" />
-      </div>
-      
-      <div class="form-group mb-4">
-        <label for="">Date</label>
-        <input type="text" class="form-control" name="form-date" disabled value="<%= todayDate %>"/>
-      </div>
 
       <div class="form-group mb-4">
-        <label for="sel1" class="form-label">The Interview was</label>
-        <select class="form-select form-control" id="sel1" name="feedBack">
-          <option>😂Very Easy!</option>
-          <option selected>🙂Easy!</option>
-          <option>😯Intermediate</option>
-          <option>😡Hard</option>
-          <option>😢Very Hard</option>
-          <option>❤️Selected</option>
-          <option>😞Disappointment!</option>
-        </select>
+        <label for="">Company</label>
+        <input type="text" class="form-control" name="postCompany" />
       </div>
-  
+
+
       <div class="form-group mb-4">
-        <label for="">Describe It</label>
-        <textarea
-          type="text"
-          class="form-control"
-          name="postBody"
-          rows="4"
-          cols="30"
-        ></textarea>
+        <label for="">Position</label>
+        <input type="text" class="form-control" name="postPosition" />
+      </div>
+
+
+      <div class="form-group mb-4">
+        <div class="row">
+          <div class="col-md-6">
+            <label class="form-label">Difficulty level</label>
+            <select class="form-select form-control" id="sel1" name="feedBack">
+              <option selected>🙂Easy</option>
+              <option>😯Intermediate</option>
+              <option>😡Hard</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-2">Select the result of your interview:</p>
+            <div class="radio-options">
+              <label class="radio-option">
+                <input type="radio" name="offerStatus" value="Offered" id="interviewResultOffered">
+                <span class="radio-label offered">Offered</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="offerStatus" value="Rejected" id="interviewResultRejected">
+                <span class="radio-label rejected">Rejected</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="form-group mb-4">
+        <label for="">Describe your interview journey</label>
+        <textarea type="text" class="form-control" name="postBody" rows="4" cols="30"></textarea>
       </div>
       <div class="but">
-        <button class="btn btn-success btn-md" type="submit " name="buton ">
-          Publish your experience
+        <button class="btn btn-success btn-md" type="submit" name="buton">
+          Publish
         </button>
       </div>
     </form>

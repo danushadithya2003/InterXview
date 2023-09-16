@@ -107,22 +107,23 @@ router.get("/main", async (req, res) => {
 router.route("/compose")
     .get((req, res) => {
         if (req.session.user && req.cookies.user_sid) {
-            res.render("compose", { todayDate: today });
+            res.render("compose");
         } else {
             res.redirect("/signin");
         }
     })
     .post(async (req, res) => {
-        const { postTitle, postBody, feedBack } = req.body;
+        const { postCompany, postPosition, feedBack, postBody } = req.body;
 
         if (!req.session.user || !req.cookies.user_sid) {
             return res.redirect("/signin");
         }
 
         const newExperience = new experienceModel({
-            title: postTitle,
-            content: postBody,
+            company: postCompany,
+            position: postPosition,
             feedback: feedBack,
+            content: postBody,
             date: today,
             user: req.session.user._id,
         });
