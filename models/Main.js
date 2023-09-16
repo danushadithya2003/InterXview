@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String
+    },
+    defaultRole: {
+        type: String,
+        default: "student"
     }
 });
 
@@ -20,6 +24,7 @@ const experienceSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Company"
     },    
+    companyName: String,
     position: String,
     feedback: String,
     result: String, 
