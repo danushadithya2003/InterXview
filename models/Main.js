@@ -16,15 +16,26 @@ const userSchema = new mongoose.Schema({
 
 // Interview experience document schema
 const experienceSchema = new mongoose.Schema({
-    title: String,
-    content: String,
-    feedback: String,
+    company: String,    
+    position: String,
+    feedback: String, 
+    content: String,  
     date: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User" // Reference to the User model
+        ref: "User"
     }
 });
+// const experienceSchema = new mongoose.Schema({
+//     title: String,
+//     content: String,
+//     feedback: String,
+//     date: String,
+//     user: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "User" // Reference to the User model
+//     }
+// });
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
