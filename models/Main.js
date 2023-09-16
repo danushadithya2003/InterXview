@@ -1,38 +1,57 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const passport = require("passport")
-const LocalStrategy = require("passport-local")
-const passportLocalMongoose = require("passport-local-mongoose")
 
-// Connecting to the DB
-mongoose.connect("mongodb://127.0.0.1:27017/JournlDB",  { useUnifiedTopology:true});
-
-
-// Creation of schema
+// User document schema
 const userSchema = new mongoose.Schema({
-    username:{
+    username: {
         type: String
-    }, 
+    },
     email: {
         type: String
-    }, 
+    },
     password: {
         type: String
     }
 });
 
-userSchema.pre("save", function(next) {
-    if(!this.isModified("password")) {
-        return next();
+// Interview experience document schema
+const experienceSchema = new mongoose.Schema({
+    title: String,
+    content: String,
+    feedback: String,
+    date: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User" // Reference to the User model
     }
-    this.password = bcrypt.hashSync(this.password, 10);
-    next();
 });
 
-userSchema.methods.comparePassword = function(plaintext, callback) {
-    return callback(null, bcrypt.compareSync(plaintext, this.password));
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+        return next();
+    }
+
+    try {
+        this.password = await bcrypt.hash(this.password, 10);
+        return next();
+    } catch (error) {
+        return next(error);
+    }
+});
+
+userSchema.methods.comparePassword = async function(plaintext, callback) {
+    try {
+        const match = await bcrypt.compare(plaintext, this.password);
+        return callback(null, match);
+    } catch (error) {
+        return callback(error);
+    }
 };
 
-const userModel = mongoose.model('user',userSchema)
- 
-module.exports = userModel
+const userModel = mongoose.model('user', userSchema);
+const experienceModel = mongoose.model('experience', experienceSchema);
+
+module.exports = {
+    userModel,
+    experienceModel
+};

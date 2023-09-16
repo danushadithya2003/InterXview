@@ -1,18 +1,18 @@
-<%-include ("partials/header_1.ejs") %>
+<%- include("partials/header_1.ejs") %>
 <div class="maindiv">
-  <h2 style="text-align: center">Welcome User👋<br>Explore some Interview EXperiance 🙌</h2>
+  <h2 style="text-align: center">Welcome User👋<br>Explore some Interview Experiences 🙌</h2>
   <div class="container-fluid"> 
     <div class="row">
-      <% memories.forEach(function(memory){ %>
-        <div class=" cards col-lg-4 col-md-12 col-sm-12 mb-3">
+      <% experiences.forEach(function(experience){ %>
+        <div class="cards col-lg-4 col-md-12 col-sm-12 mb-3">
           <div class="card border border-3">
             <div class="card-header text_date">
-              <div class="home_card_header"><%= memory.feedback%></div>
-              <div class="home_card_date">📅 <%= memory.date%></div>
+              <div class="home_card_header"><%= experience.feedback %></div>
+              <div class="home_card_date">📅 <%= experience.date %></div>
             </div>
             <div class="card-body">
-              <h3><%= memory.title%></h3>
-              <p class="card-text"><%= memory.content%></p>
+              <h3><%= experience.title %></h3>
+              <p class="card-text"><%= experience.content %></p>
             </div>
           </div>
         </div>
@@ -21,5 +21,5 @@
   </div>
 </div>
 <script>
-    alert("User Authenticated Successfully!");
+  alert("User Authenticated Successfully!");
 </script>
