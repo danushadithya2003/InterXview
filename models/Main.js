@@ -26,16 +26,6 @@ const experienceSchema = new mongoose.Schema({
         ref: "User"
     }
 });
-// const experienceSchema = new mongoose.Schema({
-//     title: String,
-//     content: String,
-//     feedback: String,
-//     date: String,
-//     user: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: "User" // Reference to the User model
-//     }
-// });
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
