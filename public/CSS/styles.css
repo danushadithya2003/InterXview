@@ -234,6 +234,28 @@ th{
 }
 }
 
+/* Company card view */
+.company-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust the column width as needed */
+  gap: 20px; /* Adjust the gap between cards */
+  justify-items: center; /* Center content horizontally */
+}
+
+.company-card {
+  width: 100%;
+  padding: 10px; /* Adjust card padding as needed */
+  border: 1px solid #ccc; /* Add a border for separation */
+}
+
+.logo {
+  max-height: 100px; /* Set a specific height for the logo */
+}
+
+.company-info {
+  text-align: center; /* Center text content */
+}
+
 /* Offer staus radio button */
 .radio-options {
   display: flex;

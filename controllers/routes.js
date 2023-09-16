@@ -1,5 +1,5 @@
 const express = require('express');
-const { userModel, experienceModel } = require("../models/Main");
+const { userModel, experienceModel, companyModel } = require("../models/Main");
 
 const router = express.Router();
 
@@ -91,8 +91,41 @@ router.route("/signin")
 router.get("/main", async (req, res) => {
     try {
         if (req.session.user && req.cookies.user_sid) {
+            const companies = await companyModel.find({}).exec();
+            res.render("main", { companies });
+        } else {
+            res.redirect("/signin")
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+// Route for explore all interview experiences
+router.get("/explore", async (req, res) => {
+    try {
+        if (req.session.user && req.cookies.user_sid) {
             const experiences = await experienceModel.find({}).exec();
-            res.render("main", { experiences });
+            res.render("explore", { experiences });
+        } else {
+            res.redirect("/signin");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+// Route for a company specific interview exxperience
+router.get("/:companyId/experiences", async (req, res) => {
+    try {
+        if (req.session.user && req.cookies.user_sid) {
+            const companyId = req.params.companyId;
+            const experiences = await experienceModel.find({ companyKey: companyId }).exec();
+            res.render("experience", { experiences });
         } else {
             res.redirect("/signin");
         }
@@ -105,27 +138,34 @@ router.get("/main", async (req, res) => {
 
 // Routes for composing a new interview experience
 router.route("/compose")
-    .get((req, res) => {
-        if (req.session.user && req.cookies.user_sid) {
-            res.render("compose");
-        } else {
-            res.redirect("/signin");
+    .get(async (req, res) => {
+        try {
+            if (req.session.user && req.cookies.user_sid) {
+                const companies = await companyModel.find({}).exec();
+                res.render("compose", { companies });
+            } else {
+                res.redirect("/signin");
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).send("Internal Server Error");
         }
     })
     .post(async (req, res) => {
-        const { postCompany, postPosition, feedBack, postBody } = req.body;
+        const { postCompanyKey, postPosition, feedBack, offerStatus, postBody } = req.body;
 
         if (!req.session.user || !req.cookies.user_sid) {
             return res.redirect("/signin");
         }
 
         const newExperience = new experienceModel({
-            company: postCompany,
+            companyKey: postCompanyKey,
             position: postPosition,
             feedback: feedBack,
+            result: offerStatus,
             content: postBody,
             date: today,
-            user: req.session.user._id,
+            userKey: req.session.user._id,
         });
 
         try {
@@ -151,6 +191,24 @@ router.get("/signout", async (req, res) => {
         }
     } else {
         res.redirect("/signin");
+    }
+});
+
+
+// Route to add new company details
+router.post("/company/new", async (req, res) => {
+    const { postCompany, postLogo, postDescription } = req.body
+    const newCompany = new companyModel({
+        companyName: postCompany,
+        logoURL: postLogo,
+        description: postDescription
+    });
+
+    try {
+        await newCompany.save();
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Failed to add company details...");
     }
 });
 
