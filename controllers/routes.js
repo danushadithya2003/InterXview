@@ -158,8 +158,15 @@ router.route("/compose")
             return res.redirect("/signin");
         }
 
+        const selectedCompany = await companyModel.findOne({_id: postCompanyKey });
+
+        if (!selectedCompany) {
+            return res.status(400).send("Invalid company selected")
+        }
+
         const newExperience = new experienceModel({
             companyKey: postCompanyKey,
+            companyName: selectedCompany.companyName,
             position: postPosition,
             feedback: feedBack,
             result: offerStatus,
