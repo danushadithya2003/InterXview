@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const { userModel, experienceModel, companyModel } = require("../models/Main");
 
 const router = express.Router();
@@ -75,9 +76,13 @@ router.route("/signin")
                 if (!match) {
                     return res.render("signin");
                 }
-
+                
                 req.session.user = user;
-                res.redirect("/main");
+                if (user.defaultRole == "admin") {
+                    res.redirect("/main/admin");
+                } else {
+                    res.redirect("/main");
+                }
             });
         } catch (error) {
             console.log(error);
@@ -92,6 +97,20 @@ router.get("/main", async (req, res) => {
         if (req.session.user && req.cookies.user_sid) {
             const companies = await companyModel.find({}).exec();
             res.render("main", { companies });
+        } else {
+            res.redirect("/signin")
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+router.get("/main/admin", async (req, res) => {
+    try {
+        if (req.session.user && req.cookies.user_sid) {
+            const companies = await companyModel.find({}).exec();
+            res.render("admin", { companies });
         } else {
             res.redirect("/signin")
         }
@@ -119,7 +138,7 @@ router.get("/explore", async (req, res) => {
 });
 
 
-// Route for a company specific interview exxperience
+// Route for a company specific interview experience
 router.get("/:companyId/experiences", async (req, res) => {
     try {
         if (req.session.user && req.cookies.user_sid) {
@@ -206,6 +225,11 @@ router.get("/signout", async (req, res) => {
 // Route to add new company details
 router.post("/company/new", async (req, res) => {
     const { postCompany, postLogo, postDescription } = req.body
+
+    if (!req.session.user || !req.cookies.user_sid) {
+        return res.redirect("/signin");
+    }
+
     const newCompany = new companyModel({
         companyName: postCompany,
         logoURL: postLogo,
@@ -214,9 +238,23 @@ router.post("/company/new", async (req, res) => {
 
     try {
         await newCompany.save();
+        res.redirect("/main/admin");
     } catch (error) {
         console.error(error);
         res.status(500).send("Failed to add company details...");
+    }
+});
+
+router.post("/company/delete/:companyId", async (req, res) => {
+    const companyId = req.params.companyId;
+
+    try {
+        const companyIdObj = new mongoose.Types.ObjectId(companyId);
+        await companyModel.findByIdAndRemove(companyIdObj).exec();
+        res.redirect("/main/admin");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Failed to delete company...");
     }
 });
 
