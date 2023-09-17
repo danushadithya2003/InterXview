@@ -9,6 +9,7 @@
 body {
   font-family: 'Poppins', sans-serif;
   overflow-x:hidden;
+  background:url('/Images/bg-main.png');
 }
 
 a {
@@ -23,22 +24,28 @@ li {
   padding:3% 5%;
 }
 .container-fluid{
-  padding-left: 5%;
-  padding-top: 7%;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 5%;
 }
 
 /* Top section */
 #top{
-  background-color: #ffffff;
+  height: 90vh;
 }
 
 .navbar{
-  background-color: #d9ffdd;
+  background-color:transparent;
+  height: 10vh;
 }
 
 .navbar-brand{
   font-size: 1.6rem;
   font-weight: bolder;
+}
+.navbar-brand img.brand-logo{
+  height: 50px;
+  width: fit-content;
 }
 
 .signin_navbar{
@@ -62,11 +69,13 @@ li {
   font-size:2.4rem;
   font-weight: bolder;
   padding-top: 50px;
-  color: #064635;
+  color: #1f1f1f;
 }
 
 .imagetop{
-  width: 650px;
+  margin-left: 10%;
+  left: 0;
+  width: 500px;
 }
 
 img{
@@ -81,7 +90,7 @@ img{
 
 /* Login page */
 .login {
-  background-color: #d9ffdd;
+  background-color: #ffffff;
   position: absolute;
   top:50%;
   left:50%;
@@ -119,7 +128,7 @@ img{
   align-items: center;
   padding: 20px;
   font-weight: bold;
-  background-color: #d9ffdd;
+  background-color: #ffffff;
   border-radius: 5px;
   border: 2px solid #73AD21;
 }
@@ -153,11 +162,11 @@ img{
 
 .image_card{
   height: 80px;
-  background-color: #d9ffdd;
+  background-color: #ffffff;
 }
 
 .card-header{
-  background: #d9ffdd;
+  background: #ffffff;
 }
 
 .cards{
@@ -310,7 +319,7 @@ th{
   flex: 0 1 calc(25% - 20px); 
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #d9ffdd;
+  background-color: #ffffff;
   margin: 10px; 
   display: flex; 
   flex-direction: column;
