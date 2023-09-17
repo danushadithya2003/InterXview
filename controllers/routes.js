@@ -245,6 +245,7 @@ router.post("/company/new", async (req, res) => {
     }
 });
 
+// Route for deleting a existing company
 router.post("/company/delete/:companyId", async (req, res) => {
     const companyId = req.params.companyId;
 
