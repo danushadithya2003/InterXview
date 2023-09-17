@@ -90,13 +90,14 @@ img{
 
 /* Login page */
 .login {
-  background-color: #ffffff;
+  background-color: #ffffff45;
   position: absolute;
   top:50%;
   left:50%;
   transform: translate(-50%, -50%);
   padding: 5%;
-  border: 1px solid rgb(10, 82, 0);
+  border: 3px solid transparent;
+  border-radius: 5%;
   box-shadow: 10%;
   display: inline;
   height: 470px;
@@ -112,7 +113,7 @@ img{
   text-align: center;
   margin-top: 50px;
   font-size: 2.2rem;
-  color: #064635;
+  color: #1f1f1f;
 }
 
 /* Signup Page */
@@ -130,7 +131,7 @@ img{
   font-weight: bold;
   background-color: #ffffff;
   border-radius: 5px;
-  border: 2px solid #73AD21;
+  border: 2px solid #42F949;
 }
 
 .head1 {
@@ -192,7 +193,7 @@ img{
     font-size:1.8rem;
     font-weight: bolder;
     padding-top: 10px;
-    color: #064635;
+    color: #1f1f1f;
     text-align: center;
   }
 
