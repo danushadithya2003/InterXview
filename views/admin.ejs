@@ -1,0 +1,41 @@
+<%- include("partials/header_admin.ejs") %>
+
+    <div class="container mt-4">
+        <div class="add-company-section">
+            <h2 class="company-list-title">Add New Company</h2>
+            <div class="add-company-form-box">
+                <form method="POST" action="/company/new" class="add-company-form">
+                    <div class="mb-3">
+                        <label for="postCompany" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" name="postCompany" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postLogo" class="form-label">Logo URL</label>
+                        <input type="text" class="form-control" name="postLogo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="postDescription" class="form-label">Description</label>
+                        <textarea class="form-control" name="postDescription" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Company</button>
+                </form>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <h2 class="company-list-title">Available Companies</h2>
+
+        <div class="company-admin-grid">
+            <% companies.forEach(company=> { %>
+                <div class="company-admin-card">
+                    <h3>
+                        <%= company.companyName %>
+                    </h3>
+                    <form method="POST" action="/company/delete/<%= company._id %>">
+                        <button type="submit" class="btn btn-danger delete-button">Delete</button>
+                    </form>
+                </div>
+                <% }) %>
+        </div>
+    </div>
