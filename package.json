@@ -1,12 +1,14 @@
 {
-  "name": "inter-x-view",
+  "name": "interxview",
   "version": "1.0.0",
   "description": "Interview sharing Application using MongoDB, NodeJS, ExpressJS, EJS and so on",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Naveen Varatharaj",
+  "author": "danush-anuprakash-sanjay",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
