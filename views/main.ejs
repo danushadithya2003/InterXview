@@ -1,14 +1,24 @@
 <%- include("partials/header_1") -%>
-
+<h2 style="text-align: center" class="page-title">Explore Interview Experiences</h2>
 <div class="company-cards">
   <% companies.forEach(function(company) { %>
-    <div class="company-card">
-      <a href="/<%= company._id %>/experiences"> <!-- Add a link to the new route -->
+    <!-- <div class="company-card">
+      <a href="/<%= company._id %>/experiences"> 
         <img src="<%= company.logoURL %>" class="logo" alt="<%= company.companyName %>">
         <div class="company-info">
           <h5><%= company.companyName %></h5>
           <p><%= company.description %></p>
         </div>
+      </a>
+    </div> -->
+    <div class="company-card-item">
+      <a href="/<%= company._id %>/experiences"> 
+      <div class="company-card-item-2">
+        <div class="logo">
+          <img src="<%= company.logoURL %>" alt="<%= company.companyName %>">
+        </div>
+        <h5 class="company-name"><%= company.companyName %></h5>
+      </div>
       </a>
     </div>
   <% }); %>

@@ -9,7 +9,8 @@
 body {
   font-family: 'Poppins', sans-serif;
   overflow-x:hidden;
-  background:url('/Images/bg-main.png');
+  background:url('/Images/bg-main.png') no-repeat;
+  background-size: cover;
 }
 
 a {
@@ -31,7 +32,7 @@ li {
 
 /* Top section */
 #top{
-  height: 90vh;
+  height: fit-content;
 }
 
 .navbar{
@@ -125,13 +126,14 @@ img{
 .form-width {
   margin-top: 50px;
   width: 50%;
-  height: 508px;
+  height: max-content;
   align-items: center;
   padding: 20px;
   font-weight: bold;
-  background-color: #ffffff;
+  background-color: #ffffff45;
   border-radius: 5px;
-  border: 2px solid #42F949;
+  border: 2px solid #999;
+  margin-bottom: 3%;
 }
 
 .head1 {
@@ -155,7 +157,7 @@ img{
   text-align: center;
 }
 
-.text_date{
+/* .text_date{
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -168,9 +170,9 @@ img{
 
 .card-header{
   background: #ffffff;
-}
+} */
 
-.cards{
+/* .cards{
   padding-top: 50px;
   display: inline-block;
   vertical-align: middle;
@@ -185,7 +187,7 @@ img{
 .cards:hover, .cards:focus, .cards:active {
   -webkit-transform: scale(0.1);
   transform: scale(1.1);
-}
+} */
 
  /* APPLYING MEDIA QUERIES */
 @media (max-width: 768px) {
@@ -247,23 +249,10 @@ th{
 /* Company card view */
 .company-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust the column width as needed */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust the column width as needed */
   gap: 20px; /* Adjust the gap between cards */
   justify-items: center; /* Center content horizontally */
-}
-
-.company-card {
-  width: 100%;
-  padding: 10px; /* Adjust card padding as needed */
-  border: 1px solid #ccc; /* Add a border for separation */
-}
-
-.logo {
-  max-height: 100px; /* Set a specific height for the logo */
-}
-
-.company-info {
-  text-align: center; /* Center text content */
+  padding: 2% 5%;
 }
 
 /* Offer staus radio button */
@@ -356,4 +345,213 @@ th{
 
 .delete-button:hover {
   background-color: #ff0000;
+}
+
+/* Company Cards */
+
+.company-card-item{
+  width: 200px;
+  height: 128px;
+  background-image: linear-gradient(10deg, #42F949 0%, #0064FE 100%);
+  border-radius: 5%;
+  transition: all .3s;
+}
+
+.company-card-item-2 {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 128px;
+  background-color: #ffffff;
+  transition: all .2s;
+  padding: 5%;
+  border-radius: 5%;
+  align-items: center;
+}
+
+.company-card-item-2 .logo{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.company-card-item-2 .company-name{
+  text-align: center;
+  font-weight: bold;
+  display: none;
+  margin: auto;
+}
+
+.company-card-item-2 .company-description{
+  height: 35%;
+  text-align: center;
+  font-size: .75rem;
+  overflow: scroll;
+}
+
+::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+}
+.company-card-item-2:hover {
+  transform: scale(0.98);
+  background:url('/Images/card-bg.png');
+  border-radius: 5%;
+}
+.company-card-item-2:hover .logo{
+  display: none;
+}
+
+.company-card-item-2:hover .company-name{
+  display: block;
+}
+
+.company-card-item:hover {
+  box-shadow: 0px 0px 30px 1px rgba(0, 255, 117, 0.30);
+}
+
+.page-title{
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust the column width as needed */
+    gap: 20px; /* Adjust the gap between cards */
+    justify-items: center; /* Center content horizontally */
+    padding: 2% 5%;
+}
+
+.maindiv-1{
+  padding:3% 5%;
+}
+.container-fluid-1{
+  padding-left: 5%;
+  padding-top: 7%;
+}
+
+.text_date{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.image_card{
+  height: 80px;
+  background-color: #d9ffdd;
+}
+
+.card-header{
+  background: #0064FE;
+  color: white;
+}
+
+.cards{
+  padding-top: 50px;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(0.5px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+}
+.cards:hover, .cards:focus, .cards:active {
+  -webkit-transform: scale(0.1);
+  transform: scale(1.1);
+}
+
+.experience-cards{
+  margin-top: 5%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  padding: 3%;
+  gap: 20px;
+}
+
+.experience-card-item-outer{
+  height: 400px;
+  background-image: linear-gradient(10deg, #42F949 0%, #0064FE 100%);
+  transition: all .3s;
+}
+
+.experience-card-item{
+  background: white;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  border-radius: 5%;
+}
+
+.experience-card-item:hover{
+  transform: scale(0.98);
+}
+.experience-card-item-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3%;
+  background: #0064FE;
+  height: fit-content;
+}
+
+.experience-card-item-header .company-name{
+  color:white
+}
+
+.experience-card-item-header .company-result{
+  color: white;
+}
+
+.experience-card-item-sub-header{
+  height: 10%;
+  width: 100%;
+  text-align: center;
+  padding: 2%;
+  background: #0066feae;
+  color: white;
+  text-transform: uppercase;
+}
+
+.experience-card-item-body{
+  height: 65%;
+  padding: 3%;
+  overflow: scroll;
+  background: white;
+}
+
+.experience-card-item-footer{
+  height: 20%;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  padding: 2%;
+  background-color:#42f948;
+}
+
+.feedback-area, .experience-date{
+  text-align: center;
+}
+
+ .feedback-area span, .experience-date span{
+  width: 100%;
+  text-align: center;
+  color:#333;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.feedback-area p, .experience-date p{
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-bottom: 1px solid whitesmoke;
+  padding-bottom: 5%;
+  margin-bottom: 5%;
 }

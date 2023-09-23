@@ -7,7 +7,8 @@
 
       <div class="form-group mb-4">
         <label for="">Company</label>
-        <select class="form-select form-control" name="postCompanyKey">
+        <select class="form-select form-control" name="postCompanyKey" required>
+          <option value="" disabled selected hidden>Select a Company</option>
           <% companies.forEach(function(company) { %>
             <option value="<%= company._id %>">
               <%= company.companyName %>
@@ -18,44 +19,46 @@
 
       <div class="form-group mb-4">
         <label for="">Position</label>
-        <input type="text" class="form-control" name="postPosition" />
+        <input type="text" class="form-control" name="postPosition" required/>
       </div>
 
 
       <div class="form-group mb-4">
-        <div class="row">
+        <div class="column">
           <div class="col-md-6">
             <label class="form-label">Difficulty level</label>
-            <select class="form-select form-control" id="sel1" name="feedBack">
-              <option selected>🙂Easy</option>
+            <select class="form-select form-control" id="sel1" name="feedBack" required>
+              <option value="" disabled selected hidden>Choose Difficulty Level</option>
+              <option>🙂Easy</option>
               <option>😯Intermediate</option>
               <option>😡Hard</option>
             </select>
           </div>
-          <div class="col-md-6">
-            <p class="mb-2">Select the result of your interview:</p>
-            <div class="radio-options">
-              <label class="radio-option">
-                <input type="radio" name="offerStatus" value="Offered" id="interviewResultOffered">
-                <span class="radio-label offered">Offered</span>
-              </label>
-              <label class="radio-option">
-                <input type="radio" name="offerStatus" value="Rejected" id="interviewResultRejected">
-                <span class="radio-label rejected">Rejected</span>
-              </label>
-            </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-4">
+        <div class="col-md-6">
+          <p class="mb-2">Select the result of your interview:</p>
+          <div class="radio-options">
+            <label class="radio-option">
+              <input type="radio" name="offerStatus" value="Offered" id="interviewResultOffered" checked="checked">
+              <span class="radio-label offered">Offered</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="offerStatus" value="Rejected" id="interviewResultRejected">
+              <span class="radio-label rejected">Rejected</span>
+            </label>
           </div>
         </div>
       </div>
 
-
-
       <div class="form-group mb-4">
         <label for="">Describe your interview journey</label>
-        <textarea type="text" class="form-control" name="postBody" rows="4" cols="30"></textarea>
+        <textarea type="text" class="form-control" name="postBody" rows="4" cols="30" required></textarea>
       </div>
       <div class="but">
-        <button class="btn btn-success btn-md" type="submit" name="buton">
+        <button class="btn btn-primary btn-md" type="submit" name="buton">
           Publish
         </button>
       </div>
