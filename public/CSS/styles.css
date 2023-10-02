@@ -552,19 +552,20 @@ th{
 }
 
 .experience-card-item-footer{
-  height: 20%;
+  height:max-content;
   display: flex;
   width: 100%;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: center;
   padding: 2%;
   background-color:#42f948;
 }
 
-.feedback-area, .experience-date{
+.feedback-area, .experience-vote, .experience-date{
   text-align: center;
 }
 
- .feedback-area span, .experience-date span{
+ .feedback-area span, .experience-vote span, .experience-date span{
   width: 100%;
   text-align: center;
   color:#333;
@@ -572,7 +573,7 @@ th{
   font-size: 1rem;
 }
 
-.feedback-area p, .experience-date p{
+.feedback-area p, .experience-date p, .experience-vote p{
   width: 100%;
   text-align: center;
   text-transform: uppercase;

@@ -38,6 +38,10 @@
                 <p><%= experience.date %></p>
                 <span>Date</span>
               </div>
+              <div class="experience-vote">
+                <p style="font-size: larger; border: none;" id="like-btn">⭐</p>
+                <span id="like-count">0</span>
+              </div>
             </div>
           </div>
         </div>
@@ -46,3 +50,20 @@
     <!-- </div>
   </div>
 </div> -->
+
+<script>
+  const likebtn = document.getElementById('like-btn')
+  const likecount = document.getElementById('like-count')
+  let flag = 0
+  likebtn.addEventListener('click',() => {
+    flag = !flag
+    if (flag) {
+      likebtn.innerText= '🌟'
+      likecount.innerText = parseInt(likecount.innerText) + 1
+    }
+    else {
+      likebtn.innerText = '⭐'
+      likecount.innerText = parseInt(likecount.innerText) - 1
+    }
+  })
+</script>
