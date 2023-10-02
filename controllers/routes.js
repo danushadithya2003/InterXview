@@ -32,6 +32,9 @@ router.get("/", sessionChecker, (req, res) => {
 });
 
 
+router.get("/about", sessionChecker, (req, res) => {
+    res.render("about");
+});
 // Routes for user sign-up
 router.route("/signup")
     .get(sessionChecker, (req, res) => {

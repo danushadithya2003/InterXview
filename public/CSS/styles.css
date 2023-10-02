@@ -44,6 +44,13 @@ li {
   font-size: 1.6rem;
   font-weight: bolder;
 }
+
+.navbar-brand span{
+  background: linear-gradient(to right, #0064FE,#42f948);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
+
 .navbar-brand img.brand-logo{
   height: 50px;
   width: fit-content;
@@ -70,7 +77,6 @@ li {
   font-size:2.4rem;
   font-weight: bolder;
   padding-top: 50px;
-  color: #1f1f1f;
 }
 
 .imagetop{
@@ -191,12 +197,29 @@ img{
 
  /* APPLYING MEDIA QUERIES */
 @media (max-width: 768px) {
+
+  .navbar{
+    padding:0;
+    margin: 0;
+  }
+  #navbarNav{
+    background-color:#0064FE;
+    width: 100vw;
+  }
+
+  .write_now{
+    margin: 4% !important;
+    justify-content:center;
+    align-items: center;
+  }
+
   #tophead{
     font-size:1.8rem;
     font-weight: bolder;
     padding-top: 10px;
     color: #1f1f1f;
     text-align: center;
+    justify-content: center;
   }
 
   .write_now{
@@ -299,22 +322,23 @@ th{
 
 /* Admin Add Company Form Box */
 .company-admin-grid {
-  display: flex; 
-  flex-wrap: wrap; 
-  justify-content: space-between; 
-  margin: -10px; 
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust the column width as needed */
+  gap: 20px; /* Adjust the gap between cards */
+  justify-items: center; /* Center content horizontally */
+  padding: 2% 5%;
 }
 
 .company-admin-card {
-  flex: 0 1 calc(25% - 20px); 
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #ffffff;
-  margin: 10px; 
-  display: flex; 
+  display: flex;
   flex-direction: column;
-  height: 130px;
-  position: relative; 
+  width: 200px;
+  height: 128px;
+  background-color: #ffffff;
+  transition: all .2s;
+  padding: 5%;
+  border-radius: 5%;
+  align-items: center; 
 }
 
 .company-admin-card h3 {
@@ -325,7 +349,10 @@ th{
 }
 
 .company-admin-card:hover {
-  background-color: #b3dab3; 
+  transform: scale(0.98);
+  background:url('/Images/card-bg.png');
+  background-size: contain;
+  border-radius: 5%;
 }
 
 .delete-button {
@@ -554,4 +581,70 @@ th{
   border-bottom: 1px solid whitesmoke;
   padding-bottom: 5%;
   margin-bottom: 5%;
+}
+
+.footer-text{
+  background: linear-gradient(to right, #0064FE,#42f948,#1f1f1f);
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+}
+
+.show {
+  background-color:#0064FE !important;
+  margin: 0 !important;
+  text-align: center;
+}
+
+#about{
+  padding: 1% 5%;
+}
+
+.about-title{
+  text-align: center;
+  background: linear-gradient(to right, #0064FE,#0064FE,#42f948,#42f948);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
+
+.about-subtitle{
+  font-size: 2rem;
+  text-align: center;
+}
+
+.about-description{
+  padding: 2% 5%;
+  font-size: 1.2rem;
+  text-align: justify;
+  color: #1f1f1f;
+}
+
+.team-div{
+  display: grid;
+  grid-template-columns: repeat(3,33%);
+  padding:2% 5%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.person{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.person img{
+  width:200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.person .name{
+  margin-top: 2%;
+  color: #1f1f1f;
+  font-weight:600;
+}
+
+.person .role{
+  margin-top: -3%;
+  color: #333;
 }
