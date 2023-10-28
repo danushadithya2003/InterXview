@@ -1,22 +1,7 @@
 <%- include("partials/header_1.ejs") %>
-<!-- <div class="maindiv-1"> -->
-  <h2 style="text-align: center">Welcome User👋<br>Explore Interview Experiences 🙌</h2>
-  <!-- <div class="container-fluid-1">  -->
-    <!-- <div class="row"> -->
+  <h2 style="text-align: center">Welcome <%= username %>👋<br>Explore Interview Experiences 🙌</h2>
       <div class="experience-cards">
       <% experiences.forEach(function(experience){ %>
-        <!-- <div class="cards col-lg-4 col-md-12 col-sm-12 mb-3">
-          <div class="card border border-3">
-            <div class="card-header text_date">
-              <div class="home_card_header"><%= experience.feedback %></div>
-              <div class="home_card_date">📅 <%= experience.date %></div>
-            </div>
-            <div class="card-body">
-              <h3><%= experience.companyName %></h3>
-              <p class="card-text"><%= experience.content %></p>
-            </div>
-          </div>
-        </div> -->
         <div class="experience-card-item-outer">
           <div class="experience-card-item">
             <div class="experience-card-item-header">
@@ -47,9 +32,6 @@
         </div>
       <% }) %>
       </div>
-    <!-- </div>
-  </div>
-</div> -->
 
 <script>
   const likebtn = document.getElementById('like-btn')

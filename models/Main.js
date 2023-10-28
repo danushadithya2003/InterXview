@@ -15,6 +15,12 @@ const userSchema = new mongoose.Schema({
     defaultRole: {
         type: String,
         default: "student"
+    },
+    resetToken: {
+        type: String,
+    },
+    resetTokenExpiry: {
+        type: Date,
     }
 });
 
@@ -43,6 +49,18 @@ const companySchema = new mongoose.Schema({
     description: String
 });
 
+// Likes document schema
+const likeSchema = new mongoose.Schema({
+    experienceKey: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Experience"
+    },
+    users: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
+});
+
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
         return next();
@@ -68,9 +86,11 @@ userSchema.methods.comparePassword = async function(plaintext, callback) {
 const userModel = mongoose.model('user', userSchema);
 const experienceModel = mongoose.model('experience', experienceSchema);
 const companyModel = mongoose.model('company', companySchema);
+const likeModel = mongoose.model('like', likeSchema);
 
 module.exports = {
     userModel,
     experienceModel,
-    companyModel
+    companyModel,
+    likeModel
 };

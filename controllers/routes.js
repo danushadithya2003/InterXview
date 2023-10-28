@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { userModel, experienceModel, companyModel } = require("../models/Main");
+const emailValidator = require("validator");
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const { userModel, experienceModel, companyModel, likeModel } = require("../models/Main");
 
 const router = express.Router();
 
@@ -20,7 +23,7 @@ if (dd < 10) {
     dd = '0' + dd;
 }
 
-if (mm < 10) {
+if (mm < 10) {z
     mm = '0' + mm;
 }
 today = mm + '-' + dd + '-' + yyyy;
@@ -35,6 +38,8 @@ router.get("/", sessionChecker, (req, res) => {
 router.get("/about", sessionChecker, (req, res) => {
     res.render("about");
 });
+
+
 // Routes for user sign-up
 router.route("/signup")
     .get(sessionChecker, (req, res) => {
@@ -44,15 +49,66 @@ router.route("/signup")
         const { username, email, password } = req.body;
 
         try {
+            if (!emailValidator.isEmail(email)) {
+                console.log("Invalid email")
+                return res.redirect("/signup");
+            }
+
             const existingUser = await userModel.findOne({ email }).exec();
             if (existingUser) {
                 return res.redirect("/signup");
             }
 
-            const newUser = new userModel({ username, email, password });
-            await newUser.save();
+            const otp = Math.floor(100000 + Math.random() * 900000);
 
-            res.redirect("/signin");
+            const transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: process.env.TRANSPORT_EMAIL,
+                    pass: process.env.TRANSPORT_EMAIL_PASSWORD
+                }
+            });
+
+            const mailOptions = {
+                from: process.env.TRANSPORT_EMAIL,
+                to: email,
+                subject: "Interxview - OTP Authentication",
+                text: `Your OTP for signup is: ${otp}`
+            };
+
+            await transporter.sendMail(mailOptions);
+
+            req.session.otp = otp;
+            req.session.signupDetails = { username, email, password };
+
+            res.redirect("/auth")
+        } catch (error) {
+            console.error(error);
+            res.status(500).send("Internal Server Error");
+        }
+    });
+
+
+// Routes for user authentication
+router.route("/auth")
+    .get(async (req, res) => {
+        res.render("auth")
+    })
+    .post(async (req, res) => {
+        const { otp } = req.body;
+        const savedOtp = req.session.otp;
+
+        try {
+            if (otp && parseInt(otp) == savedOtp) {
+                const { username, email, password } = req.session.signupDetails;
+                const newUser = new userModel({ username, email, password });
+
+                await newUser.save();
+
+                res.redirect("/signin");
+            } else {
+                res.redirect("/auth");
+            }
         } catch (error) {
             console.error(error);
             res.status(500).send("Internal Server Error");
@@ -94,7 +150,89 @@ router.route("/signin")
     });
 
 
-// Route for user's dashboard
+// Routes for forgot password
+router.route("/forgot-password")
+    .get(async (req, res) => {
+        res.render("forgot-password")
+    })
+    .post(async (req, res) => {
+        const email = req.body.email
+
+        const resetToken = crypto.randomBytes(20).toString('hex');
+        const resetTokenExpiry = new Date(Date.now() + 3600000); // Token expires in 1 hour
+
+        const user = await userModel.findOneAndUpdate({ email }, {
+            resetToken,
+            resetTokenExpiry
+        });
+
+        if (!user) {
+            return res.status(400).send("Email not found...")
+        }
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.TRANSPORT_EMAIL,
+                pass: process.env.TRANSPORT_EMAIL_PASSWORD
+            }
+        });
+
+        const resetLink = `${process.env.SERVER_BASE_URL}/reset-password/${resetToken}`;
+
+        const mailOptions = {
+            to: email,
+            from: process.env.TRANSPORT_EMAIL,
+            subject: "InterxView - Password Reset Request",
+            text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n`
+            + `Please click on the following link to reset your password:\n\n`
+            + resetLink + '\n\n'
+            + `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+        };
+
+        transporter.sendMail(mailOptions, (err) => {
+            if (err) {
+                console.log(err);
+                res.send("Error sending reset link email");
+            } else {
+                res.send("Password reset email sent");
+            }
+        });
+    });
+
+
+// Routes for reset password
+router.route("/reset-password/:token")
+    .get(async (req, res) => {
+        const token = req.params.token;
+
+        res.render("reset-password", { token })
+    })
+    .post(async (req, res) => {
+        const token = req.params.token;
+        const newPassword = req.body.newPassword;
+
+        const user = await userModel.findOne({ resetToken: token });
+
+        if (!user) {
+            return res.status(400).send("Invalid or expired reset token.");
+        }
+
+        if (user.resetTokenExpiry <= new Date()) {
+            return res.status(400).send("The reset token has expired.");
+        }
+
+        user.password = newPassword;
+        user.resetToken = undefined;
+        user.resetTokenExpiry = undefined;
+
+        await user.save();
+
+        res.redirect("/signin")
+    });
+
+
+// Route for user dashboard
 router.get("/main", async (req, res) => {
     try {
         if (req.session.user && req.cookies.user_sid) {
@@ -109,6 +247,8 @@ router.get("/main", async (req, res) => {
     }
 });
 
+
+// Route for admin dashboard
 router.get("/main/admin", async (req, res) => {
     try {
         if (req.session.user && req.cookies.user_sid) {
