@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const emailValidator = require("validator");
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-const { userModel, experienceModel, companyModel, likeModel } = require("../models/Main");
+const { userModel, experienceModel, companyModel } = require("../models/Main");
 
 const router = express.Router();
 
@@ -269,8 +269,8 @@ router.get("/explore", async (req, res) => {
     try {
         if (req.session.user && req.cookies.user_sid) {
             const experiences = await experienceModel.find({}).exec();
-            const username = req.session.user.username
-            res.render("explore", { experiences, username });
+            const user = req.session.user
+            res.render("explore", { experiences, user });
         } else {
             res.redirect("/signin");
         }
@@ -287,14 +287,45 @@ router.get("/:companyId/experiences", async (req, res) => {
         if (req.session.user && req.cookies.user_sid) {
             const companyId = req.params.companyId;
             const experiences = await experienceModel.find({ companyKey: companyId }).exec();
-            const username = req.session.user.username
-            res.render("experience", { experiences, username });
+            const user = req.session.user
+            res.render("experience", { experiences, user });
         } else {
             res.redirect("/signin");
         }
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
+    }
+});
+
+
+// Route for liking/unliking experiences
+router.post("/experiences/:experienceId/like", async (req, res) => {
+    try {
+        if (req.session.user && req.cookies.user_sid) {
+            const experienceId = req.params.experienceId;
+            const userId = req.session.user._id;
+
+            const experience = await experienceModel.findById(experienceId).exec();
+            const hasLiked = experience.likedBy.includes(userId);
+
+            if (hasLiked) {
+                // Unlike the experience
+                experience.likedBy.pull(userId);
+            } else {
+                // Like the experience
+                experience.likedBy.push(userId);
+            }
+
+            await experience.save();
+            
+            res.status(200).json({ liked: !hasLiked });
+        } else {
+            res.status(401).json({ error: "Unauthorized" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
