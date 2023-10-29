@@ -1,5 +1,5 @@
 <%- include("partials/header_1.ejs") %>
-<h2 style="text-align: center">Welcome User👋<br>Explore some Interview Experiences 🙌</h2>
+<h2 style="text-align: center">Welcome <%= username %>👋<br>Explore some Interview Experiences 🙌</h2>
 <div class="experience-cards"> 
       <% experiences.forEach(function(experience){ %>
         <div class="experience-card-item-outer">
