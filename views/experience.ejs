@@ -1,51 +1,81 @@
 <%- include("partials/header_1.ejs") %>
-  <h2 style="text-align: center">Welcome <%= username %>👋<br>Explore Interview Experiences 🙌</h2>
-      <div class="experience-cards">
-      <% experiences.forEach(function(experience){ %>
-        <div class="experience-card-item-outer">
-          <div class="experience-card-item">
-            <div class="experience-card-item-header">
-              <h3 class="company-name"><%= experience.companyName %></h3>
-              <h6 class="company-result"><%= experience.result %></h6>
+  <h2 style="text-align: center">Welcome <%= user.username %>👋<br>Explore Interview Experiences 🙌</h2>
+  <div class="experience-cards">
+    <% experiences.forEach(function(experience){ %>
+      <div class="experience-card-item-outer">
+        <div class="experience-card-item">
+          <div class="experience-card-item-header">
+            <h3 class="company-name"><%= experience.companyName %></h3>
+            <h6 class="company-result"><%= experience.result %></h6>
+          </div>
+          <div class="experience-card-item-sub-header">
+            <h6 class="company-role"><%= experience.position %></h6>
+          </div>
+          <div class="experience-card-item-body">
+            <p><%= experience.content %></p>
+          </div>
+          <div class="experience-card-item-footer">
+            <div class="feedback-area">
+              <p><%= experience.feedback %></p>
+              <span>Difficulty</span>
             </div>
-            <div class="experience-card-item-sub-header">
-              <h6 class="company-role"><%= experience.position %></h6>
+            <div class="experience-date">
+              <p><%= experience.date %></p>
+              <span>Date</span>
             </div>
-            <div class="experience-card-item-body">
-              <p><%= experience.content %></p>
-            </div>
-            <div class="experience-card-item-footer">
-              <div class="feedback-area">
-                <p><%= experience.feedback %></p>
-                <span>Difficulty</span>
-              </div>
-              <div class="experience-date">
-                <p><%= experience.date %></p>
-                <span>Date</span>
-              </div>
-              <div class="experience-vote">
-                <p style="font-size: larger; border: none;" id="like-btn">⭐</p>
-                <span id="like-count">0</span>
-              </div>
+            <div class="experience-vote">
+              <p style="font-size: larger; border: none; cursor: pointer;" id="like-btn-<%= experience._id %>" class="like-button">
+                <%= experience.likedBy.includes(user._id) ? '🌟' : '⭐' %>
+              </p>              
+              <span id="like-count-<%= experience._id %>" class="like-count"><%= experience.likedBy.length %></span>
             </div>
           </div>
         </div>
-      <% }) %>
       </div>
+    <% }) %>
+  </div>
 
-<script>
-  const likebtn = document.getElementById('like-btn')
-  const likecount = document.getElementById('like-count')
-  let flag = 0
-  likebtn.addEventListener('click',() => {
-    flag = !flag
-    if (flag) {
-      likebtn.innerText= '🌟'
-      likecount.innerText = parseInt(likecount.innerText) + 1
+  <script>
+    const likeButtons = document.querySelectorAll('.like-button');
+    const likeCounts = document.querySelectorAll('.like-count');
+  
+    likeButtons.forEach((likebtn) => {
+      likebtn.addEventListener('click', async () => {
+        const experienceId = likebtn.id.split('-')[2];
+  
+        const likeCountElement = document.getElementById(`like-count-${experienceId}`);
+        if (likeCountElement) {
+          const currentLikeCount = parseInt(likeCountElement.textContent, 10);
+  
+          const newLikeCount = likebtn.innerText === '🌟' ? currentLikeCount - 1 : currentLikeCount + 1;
+          likeCountElement.textContent = newLikeCount;
+  
+          likebtn.innerText = likebtn.innerText === '🌟' ? '⭐' : '🌟';
+  
+          try {
+            const response = await postExperienceLike(experienceId);
+            if (response.status !== 200) {
+              likebtn.innerText = likebtn.innerText === '🌟' ? '⭐' : '🌟';
+              likeCountElement.textContent = currentLikeCount;
+            }
+          } catch (error) {
+            console.error(error);
+            likebtn.innerText = likebtn.innerText === '🌟' ? '⭐' : '🌟';
+            likeCountElement.textContent = currentLikeCount;
+          }
+        }
+      });
+    });
+  
+    async function postExperienceLike(experienceId) {
+      try {
+        const response = await fetch(`/experiences/${experienceId}/like`, {
+          method: 'POST',
+        });
+        return response;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     }
-    else {
-      likebtn.innerText = '⭐'
-      likecount.innerText = parseInt(likecount.innerText) - 1
-    }
-  })
-</script>
+  </script>

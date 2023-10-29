@@ -39,7 +39,11 @@ const experienceSchema = new mongoose.Schema({
     userKey: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }
+    },
+    likedBy: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }]
 });
 
 // Company document schema
