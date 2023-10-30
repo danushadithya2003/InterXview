@@ -11,6 +11,7 @@ body {
   overflow-x:hidden;
   background:url('/Images/bg-main.png') no-repeat;
   background-size: cover;
+  background-attachment:fixed;
 }
 
 a {
@@ -47,6 +48,7 @@ li {
 
 .navbar-brand span{
   background: linear-gradient(to right, #0064FE,#42f948);
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
 }
@@ -66,8 +68,13 @@ li {
   font-weight: bold;
   font-size: 1.1rem;
   margin-right: 40px;
+  margin-bottom: 10px;
 }
-
+ .signin-forgot{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ } 
 /* Heading Section */
 #top{
   margin-bottom: 3%;
@@ -94,6 +101,7 @@ img{
 .write_now{
   margin-top: 15px;
 }
+
 
 /* Login page */
 .login {

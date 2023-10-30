@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/2276b674-27a3-445f-87a1-521597f06c12/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/interxview",
+    "appService.deploySubpath": "."
+}
