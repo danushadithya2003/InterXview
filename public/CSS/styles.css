@@ -206,6 +206,11 @@ img{
  /* APPLYING MEDIA QUERIES */
 @media (max-width: 768px) {
 
+  body{
+    background-position: 80% 0%;
+    background-attachment: fixed;
+  }
+
   .navbar{
     padding:0;
     margin: 0;
