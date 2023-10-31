@@ -1,9 +1,8 @@
 <%- include("partials/header_admin.ejs") %>
 
-    <div class="container mt-4">
-        <div class="add-company-section">
-            <h2 class="company-list-title">Add New Company</h2>
-            <div class="add-company-form-box">
+<h2 id="login_heading">Add New Company</h2>
+<div class="login-container">
+            <div class="login user_login">
                 <form method="POST" action="/company/new" class="add-company-form">
                     <div class="mb-3">
                         <label for="postCompany" class="form-label">Company Name</label>
@@ -20,11 +19,11 @@
                     <button type="submit" class="btn btn-primary">Add Company</button>
                 </form>
             </div>
-        </div>
 
+        </div>
         <hr class="my-4">
 
-        <h2 class="company-list-title">Available Companies</h2>
+        <h2 id="login_heading">Available Companies</h2>
 
         <div class="company-admin-grid">
             <% companies.forEach(company=> { %>
@@ -38,4 +37,3 @@
                 </div>
                 <% }) %>
         </div>
-    </div>

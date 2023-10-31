@@ -1,6 +1,6 @@
 <%-include ("partials/header.ejs") %>
 
-  <h2 id="login_heading"> Signin to continue !👋</h2>
+<h2 id="login_heading"> Contact us👋</h2>
 <div class="login-container">
   <div class="login user_login">
     <form method="post" action="/signin">
@@ -10,16 +10,12 @@
       </div>
 
       <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" name="password" class="form-control" autocomplete="off" id="password">
+        <label for="password" class="form-label">What can we help with?</label>
+        <textarea class="form-control" id=feedback" rows="3"></textarea>
       </div>
       <div class="signin-forgot">
-        <button type="submit" class="btn btn-primary">Sign-in</button> 
-      <a href="/forgot-password">Forgot Password?</a>
+        <a href="mailto:interxview@gmail.com"><button type="submit" class="btn btn-primary">Send us</button></a>
       </div>
     </form>  
-
-
-    <h6 id="span"> Don't have a account ? <a href="/signup"> Sign up!</a></h6>
   </div>
 </div>
