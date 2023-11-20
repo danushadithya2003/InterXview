@@ -339,6 +339,7 @@ router.post("/experiences/:experienceId/like", async (req, res) => {
 });
 
 
+// Route for search and filter functionality
 router.get("/search", async (req, res) => {
     const searchTerm = req.query.companyName.toLowerCase();
 
