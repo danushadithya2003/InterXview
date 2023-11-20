@@ -1,25 +1,77 @@
 <%-include ("partials/header.ejs") %>
 
   <h2 id="login_heading"> Signin to continue !👋</h2>
-<div class="login-container">
-  <div class="login user_login">
-    <form method="post" action="/signin">
-      <div class="mb-3">
-        <label for="email"  class="form-label">Email</label>
-        <input type="text" name="email" class="form-control" autocomplete="off" id="username" aria-describedby="emailHelp">
-      </div>
+  <div class="login-container">
+    <div class="login user_login">
+      <form id="signinForm" method="post" action="/signin">
+        <div class="mb-3">
+          <label for="email"  class="form-label">Email</label>
+          <input type="text" name="email" class="form-control" autocomplete="off" id="email" aria-describedby="emailHelp">
+        </div>
 
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" name="password" class="form-control" autocomplete="off" id="password">
-      </div>
-      <div class="signin-forgot">
-        <button type="submit" class="btn btn-primary">Sign-in</button> 
-      <a href="/forgot-password">Forgot Password?</a>
-      </div>
-    </form>  
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" autocomplete="off" id="password">
+        </div>
+        <div class="signin-forgot">
+          <button type="submit" class="btn btn-primary">Sign-in</button> 
+        <a href="/forgot-password">Forgot Password?</a>
+        </div>
+      </form>  
 
 
-    <h6 id="span"> Don't have a account ? <a href="/signup"> Sign up!</a></h6>
+      <h6 id="span"> Don't have a account ? <a href="/signup"> Sign up!</a></h6>
+    </div>
   </div>
-</div>
+
+  <script>
+    document.getElementById("signinForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+
+      const bodyData = {
+          email: email,
+          password: password
+      };
+      
+      fetch("/signin", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(bodyData)
+        })
+        .then(response => {
+          if (response.status === 401) {
+            response.text().then(errorMessage => {
+            toastAlert(errorMessage);
+          });
+          } else if (response.redirected) {
+            window.location.href = response.url;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        })
+    });
+
+    function toastAlert(msg) {
+        const Toast = Swal.mixin({
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "error",
+        title: msg
+      });
+    }
+  </script>

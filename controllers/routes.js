@@ -134,12 +134,14 @@ router.route("/signin")
         try {
             const user = await userModel.findOne({ email }).exec();
             if (!user) {
-                return res.redirect("/signin");
+                res.status(401).send("The username or password you entered is incorrect")
+                return;
             }
 
             user.comparePassword(password, (error, match) => {
                 if (!match) {
-                    return res.render("signin");
+                    res.status(401).send("The username or password you entered is incorrect")
+                    return;
                 }
                 
                 req.session.user = user;
