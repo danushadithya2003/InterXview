@@ -134,13 +134,13 @@ router.route("/signin")
         try {
             const user = await userModel.findOne({ email }).exec();
             if (!user) {
-                res.status(401).send("The username or password you entered is incorrect")
+                res.status(401).send("The email or password you entered is incorrect")
                 return;
             }
 
             user.comparePassword(password, (error, match) => {
                 if (!match) {
-                    res.status(401).send("The username or password you entered is incorrect")
+                    res.status(401).send("The email or password you entered is incorrect")
                     return;
                 }
                 
