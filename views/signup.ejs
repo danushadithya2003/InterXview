@@ -1,8 +1,8 @@
 <%-include ("partials/header.ejs") %>
-  <h2 id="login_heading">Register Here ⚡</h2>
+<h2 id="login_heading">Register Here ⚡</h2>
 <div class="login-container">
   <div class="login user_login">
-    <form method="post"; action="/signup" >
+    <form id="signupForm" method="post" action="/signup" >
 
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
@@ -25,3 +25,49 @@
     </form>  
   </div>
 </div>
+
+<script>
+  document.getElementById("signupForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    let username = document.getElementById("username").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    const bodyData = {
+        username: username,
+        email: email,
+        password: password
+    };
+    
+    await fetch("/signup", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyData)
+      })
+      .then(response => {
+        if (response.status === 500) {
+          toastAlert({
+              icon: "error",
+              msg: "Something went haywire",
+              position: "top"
+            });
+        } else if (response.status === 401) {
+          response.text().then(errorMessage => {
+            toastAlert({
+              icon: "error",
+              msg: errorMessage,
+              position: "top"
+            });
+        });
+        } else if (response.redirected) {
+          window.location.href = response.url;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      })
+  });
+</script>

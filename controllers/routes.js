@@ -56,13 +56,14 @@ router.route("/signup")
 
         try {
             if (!emailValidator.isEmail(email)) {
-                console.log("Invalid email")
-                return res.redirect("/signup");
+                res.status(401).send("Invalid email");
+                return;
             }
 
             const existingUser = await userModel.findOne({ email }).exec();
             if (existingUser) {
-                return res.redirect("/signup");
+                res.status(401).send("An account is already registered with your email");
+                return;
             }
 
             const otp = Math.floor(100000 + Math.random() * 900000);
