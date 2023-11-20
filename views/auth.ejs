@@ -2,7 +2,7 @@
 <h2 id="login_heading">Verify OTP</h2>
 <div class="login-container">
   <div class="login user_login">
-    <form method="post" action="/auth">
+    <form id="authForm" method="post" action="/auth">
       <div class="mb-3">
         <label for="otp" class="form-label">Enter the 6-digit OTP sent to your email</label>
         <input type="number" class="form-control" id="otp" name="otp" required>
@@ -12,3 +12,45 @@
     </form>
   </div>
 </div>
+
+<script>
+  document.getElementById("authForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    let otp = document.getElementById("otp").value;
+
+    const bodyData = {
+        otp: otp
+    };
+    
+    await fetch("/auth", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyData)
+      })
+      .then(response => {
+        if (response.status === 500) {
+          toastAlert({
+              icon: "error",
+              msg: "Something went haywire",
+              position: "top"
+            });
+        } else if (response.status === 401) {
+          response.text().then(errorMessage => {
+            toastAlert({
+              icon: "error",
+              msg: errorMessage,
+              position: "top"
+            });
+        });
+        } else if (response.redirected) {
+          window.location.href = response.url;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      })
+  });
+</script>

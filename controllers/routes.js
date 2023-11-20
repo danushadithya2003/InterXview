@@ -114,7 +114,7 @@ router.route("/auth")
 
                 res.redirect("/signin");
             } else {
-                res.redirect("/auth");
+                res.status(401).send("The OTP entered is incorrect")
             }
         } catch (error) {
             console.error(error);
