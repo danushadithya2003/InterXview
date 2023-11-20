@@ -4,6 +4,7 @@ const emailValidator = require("validator");
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const { userModel, experienceModel, companyModel } = require("../models/Main");
+const { session } = require('passport');
 
 const router = express.Router();
 
@@ -35,12 +36,14 @@ router.get("/", sessionChecker, (req, res) => {
 });
 
 
-router.get("/about", sessionChecker, (req, res) => {
-    res.render("about");
+router.get("/about",async (req, res) => {
+    const user = req.session.user
+    res.render("about", { user });
 });
 
-router.get("/contact", sessionChecker, (req, res) => {
-    res.render("contact");
+router.get("/contact", (req, res) => {
+    const user = req.session.user
+    res.render("contact", { user });
 });
 
 // Routes for user sign-up

@@ -1,5 +1,8 @@
-<%-include ("partials/header.ejs") %>
-
+<% if (user) { %>
+  <%- include("partials/header_1") %>
+<% } else { %>
+  <%- include("partials/header") %>
+  <% } %>
 <h2 id="login_heading"> Contact us👋</h2>
 <div class="login-container">
   <div class="login user_login">
