@@ -46,11 +46,11 @@
         .then(response => {
           if (response.status === 401) {
             response.text().then(errorMessage => {
-            toastAlert({
-              icon: "error",
-              msg: errorMessage,
-              position: "top"
-            });
+              toastAlert({
+                icon: "error",
+                msg: errorMessage,
+                position: "top"
+              });
           });
           } else if (response.redirected) {
             window.location.href = response.url;
