@@ -46,7 +46,11 @@
         .then(response => {
           if (response.status === 401) {
             response.text().then(errorMessage => {
-            toastAlert(errorMessage);
+            toastAlert({
+              icon: "error",
+              msg: errorMessage,
+              position: "top"
+            });
           });
           } else if (response.redirected) {
             window.location.href = response.url;
@@ -56,22 +60,4 @@
           console.error('Error:', error);
         })
     });
-
-    function toastAlert(msg) {
-        const Toast = Swal.mixin({
-        toast: true,
-        position: "top",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        }
-      });
-      Toast.fire({
-        icon: "error",
-        title: msg
-      });
-    }
   </script>
