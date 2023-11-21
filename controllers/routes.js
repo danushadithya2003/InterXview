@@ -162,10 +162,10 @@ router.route("/signin")
 // Routes for forgot password
 router.route("/forgot-password")
     .get(async (req, res) => {
-        res.render("forgot-password")
+        res.render("forgot-password");
     })
     .post(async (req, res) => {
-        const email = req.body.email
+        const email = req.body.email;
 
         const resetToken = crypto.randomBytes(20).toString('hex');
         const resetTokenExpiry = new Date(Date.now() + 3600000); // Token expires in 1 hour
@@ -237,21 +237,24 @@ router.route("/reset-password/:token")
 
         await user.save();
 
-        res.redirect("/signin")
+        res.redirect("/signin");
     });
 
 
 // Route for user dashboard
 router.get("/main", async (req, res) => {
+    const user = req.session.user;
+
     try {
-        if (req.session.user && req.cookies.user_sid) {
+        if (user && req.cookies.user_sid) {
             const companies = await companyModel.find({}).exec();
-            res.render("main", { companies });
+
+            res.render("main", { companies, user });
         } else {
-            res.redirect("/signin")
+            res.redirect("/signin");
         }
     } catch (error) {
-        console.error(error)
+        console.error(error);
         res.status(500).send("Internal Server Error");
     }
 });
@@ -264,10 +267,10 @@ router.get("/main/admin", async (req, res) => {
             const companies = await companyModel.find({}).exec();
             res.render("admin", { companies });
         } else {
-            res.redirect("/signin")
+            res.redirect("/signin");
         }
     } catch (error) {
-        console.error(error)
+        console.error(error);
         res.status(500).send("Internal Server Error");
     }
 });
