@@ -1,5 +1,39 @@
 <%- include("partials/header_1.ejs") %>
   <h2 style="text-align: center">Welcome <%= user.username %>👋<br>Explore Interview Experiences 🙌</h2>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Search by Roles" aria-label="Search" aria-describedby="search-button">
+          <button class="btn btn-outline-primary" type="button" id="search-button">Search</button>
+        </div>
+      </div>
+  
+      <div class="col-auto">
+        <div class="btn-group">
+          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Filter
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">All</a></li>
+            <li><a class="dropdown-item" href="#">Offered</a></li>
+            <li><a class="dropdown-item" href="#">Rejected</a></li>
+          </ul>
+        </div>
+  
+        <div class="btn-group ms-2">
+          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Sort By
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Most Recent</a></li>
+            <li><a class="dropdown-item" href="#">Most Liked</a></li>
+            <li><a class="dropdown-item" href="#">Difficulty</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="experience-cards">
     <% experiences.forEach(function(experience){ %>
       <div class="experience-card-item-outer">
@@ -34,7 +68,15 @@
       </div>
     <% }) %>
   </div>
-
+  <footer class="footer text-center">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="footer-text">&copy; 2023 InterXview. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+  </footer>
   <script>
     const likeButtons = document.querySelectorAll('.like-button');
     const likeCounts = document.querySelectorAll('.like-count');
