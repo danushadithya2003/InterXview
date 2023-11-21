@@ -12,10 +12,10 @@
     <div class="col-md-6">
 
       <div class="search">
-        <form action="post">
+        <form id="searchForm">
           <i class="fa fa-search"></i>
           <input id="seachInput" type="text" class="form-control" placeholder="Search here">
-          <button id="searchButton" class="btn btn-primary" type="button">Search</button>
+          <button class="btn btn-primary" type="submit">Search</button>
         </form>
       </div>
     </div>
@@ -91,7 +91,9 @@
     }
   }
 
-  document.getElementById("searchButton").addEventListener("click", function () {
+  document.getElementById("searchForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
     searchCompanies();
   });
 </script>
