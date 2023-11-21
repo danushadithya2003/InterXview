@@ -339,6 +339,23 @@ router.post("/experiences/:experienceId/like", async (req, res) => {
 });
 
 
+// Route for search and filter functionality
+router.get("/search", async (req, res) => {
+    const searchTerm = req.query.companyName.toLowerCase();
+
+    try {
+        const filteredCompanies = await companyModel.find({
+            companyName: { $regex: searchTerm, $options: "i" }
+        });
+
+        res.status(200).json({ companies: filteredCompanies });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" })
+    }
+});
+
+
 // Routes for composing a new interview experience
 router.route("/compose")
     .get(async (req, res) => {

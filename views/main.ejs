@@ -12,8 +12,8 @@
 
       <div class="search">
         <i class="fa fa-search"></i>
-        <input type="text" class="form-control" placeholder="Search here">
-        <button class="btn btn-primary">Search</button>
+        <input id="seachInput" type="text" class="form-control" placeholder="Search here">
+        <button id="searchButton" class="btn btn-primary">Search</button>
       </div>
       
     </div>
@@ -22,15 +22,6 @@
 </div>
 <div class="company-cards">
   <% companies.forEach(function(company) { %>
-    <!-- <div class="company-card">
-      <a href="/<%= company._id %>/experiences"> 
-        <img src="<%= company.logoURL %>" class="logo" alt="<%= company.companyName %>">
-        <div class="company-info">
-          <h5><%= company.companyName %></h5>
-          <p><%= company.description %></p>
-        </div>
-      </a>
-    </div> -->
     <div class="company-card-item">
       <a href="/<%= company._id %>/experiences"> 
       <div class="company-card-item-2">
@@ -43,3 +34,53 @@
     </div>
   <% }); %>
 </div>
+
+<script>
+  function displayFilteredCompanies(companies) {
+    const companyCardsContainer = document.querySelector(".company-cards");
+    companyCardsContainer.innerHTML = ""; 
+
+    companies.forEach(company => {
+      const companyCardHTML = `
+        <div class="company-card-item">
+          <a href="/${company._id}/experiences"> 
+            <div class="company-card-item-2">
+              <div class="logo">
+                <img src="${company.logoURL}" alt="${company.companyName}">
+              </div>
+              <h5 class="company-name">${company.companyName}</h5>
+            </div>
+          </a>
+        </div>
+      `;
+      companyCardsContainer.insertAdjacentHTML("beforeend", companyCardHTML);
+    });
+  }
+
+  async function searchCompanies() {
+    const searchInput = document.getElementById("seachInput").value;
+
+    try {
+      response = await fetch(`/search?companyName=${searchInput}`);
+
+      if (!response.ok) {
+        toastAlert({
+          icon: "error",
+          msg: "Something went haywire",
+          position: "top"
+        });
+
+        return;
+      }
+
+      const data = await response.json();
+      displayFilteredCompanies(data.companies);
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  document.getElementById("searchButton").addEventListener("click", function () {
+    searchCompanies();
+  });
+</script>
