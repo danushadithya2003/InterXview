@@ -170,13 +170,14 @@ router.route("/forgot-password")
         const resetToken = crypto.randomBytes(20).toString('hex');
         const resetTokenExpiry = new Date(Date.now() + 3600000); // Token expires in 1 hour
 
-        const user = await userModel.findOneAndUpdate({ email }, {
+        const existingUser = await userModel.findOneAndUpdate({ email }, {
             resetToken,
             resetTokenExpiry
         });
 
-        if (!user) {
-            return res.status(400).send("Email not found...")
+        if (!existingUser) {
+            res.status(400).send("There is no exisiting user registered with this email");
+            return;
         }
 
         const transporter = nodemailer.createTransport({
@@ -201,10 +202,9 @@ router.route("/forgot-password")
 
         transporter.sendMail(mailOptions, (err) => {
             if (err) {
-                console.log(err);
-                res.send("Error sending reset link email");
+                res.status(500).send("Error sending reset link email");
             } else {
-                res.send("Password reset email sent");
+                res.status(200).send("Password reset email sent. Please check your inbox");
             }
         });
     });
@@ -224,11 +224,11 @@ router.route("/reset-password/:token")
         const user = await userModel.findOne({ resetToken: token });
 
         if (!user) {
-            return res.status(400).send("Invalid or expired reset token.");
+            return res.status(400).send("Invalid or expired reset token");
         }
 
         if (user.resetTokenExpiry <= new Date()) {
-            return res.status(400).send("The reset token has expired.");
+            return res.status(400).send("The reset token has expired");
         }
 
         user.password = newPassword;
