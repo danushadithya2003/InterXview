@@ -1,8 +1,9 @@
-<%- include("partials/header_1") -%>
+<% if (user.defaultRole == "admin") { %>
+  <%- include("partials/header_1_admin") %>
+<% } else { %>
+  <%- include("partials/header_1") %>
+  <% } %>
 
-<style>
-
-</style>
 <h2 style="text-align: center" class="page-title">Explore Interview Experiences</h2>
 <div class="container">
 
