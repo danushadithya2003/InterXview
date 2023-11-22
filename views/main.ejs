@@ -64,6 +64,7 @@
           </a>
         </div>
       `;
+      
       companyCardsContainer.insertAdjacentHTML("beforeend", companyCardHTML);
     });
   }
@@ -72,20 +73,19 @@
     const searchInput = document.getElementById("seachInput").value;
 
     try {
-      response = await fetch(`/search?companyName=${searchInput}`);
-
-      if (!response.ok) {
-        toastAlert({
-          icon: "error",
-          msg: "Something went haywire",
-          position: "top"
-        });
-
-        return;
-      }
+      response = await fetch(`/search-control?searchBy=company&companyName=${searchInput}`);
 
       const data = await response.json();
-      displayFilteredCompanies(data.companies);
+
+      if (!response.ok) {
+        return toastAlert({
+          icon: "error",
+          msg:  data.error,
+          position: "top"
+        });
+      }
+
+      displayFilteredCompanies(data.results);
     } catch (error) {
       console.error(error)
     }
