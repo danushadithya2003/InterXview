@@ -207,8 +207,10 @@
     });
     
     // Filter dropdown menu event listeners
-    document.getElementById("filter-all").addEventListener("click", async () => {
+    document.getElementById("filter-all").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+
         const searchInput = document.getElementById("searchInput").value;
         const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
         
@@ -221,8 +223,10 @@
       }
     });
 
-    document.getElementById("filter-offered").addEventListener("click", async () => {
+    document.getElementById("filter-offered").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+
         const searchInput = document.getElementById("searchInput").value;
         const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
         
@@ -235,8 +239,10 @@
       }
     });
 
-    document.getElementById("filter-rejected").addEventListener("click", async () => {
+    document.getElementById("filter-rejected").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+
         const searchInput = document.getElementById("searchInput").value;
         const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
 
@@ -251,8 +257,10 @@
     });
 
     // Sort dropdown menu event listeners
-    document.getElementById("sort-by-recent").addEventListener("click", async () => {
+    document.getElementById("sort-by-recent").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+
         const searchInput = document.getElementById("searchInput").value;
         const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
 
@@ -266,8 +274,10 @@
       }
     });
 
-    document.getElementById("sort-by-liked").addEventListener("click", async () => {
+    document.getElementById("sort-by-liked").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+
         const searchInput = document.getElementById("searchInput").value;
         const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
 
@@ -281,8 +291,10 @@
       }
     });
 
-    document.getElementById("sort-by-difficulty").addEventListener("click", async () => {
+    document.getElementById("sort-by-difficulty").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+        
         const searchInput = document.getElementById("searchInput").value;
         const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
 
