@@ -3,11 +3,11 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col">
-      <form action="">
+      <form id="searchForm">
         <div class="input-group mb-3">
           <input id="searchInput" type="text" class="form-control" placeholder="Search by Roles" aria-label="Search" aria-describedby="search-button">
-          <button class="btn btn-outline-primary" type="button" id="search-button">Search</button>
-      </div>
+          <button class="btn btn-outline-primary" type="submit" id="search-button">Search</button>
+        </div>
       </form>
     </div>
 
@@ -191,9 +191,11 @@
 
 
   document.addEventListener("DOMContentLoaded", (event) => {
-    // Search button event listener
-    document.getElementById("search-button").addEventListener("click", async () => {
+    // Search event listener
+    document.getElementById("searchForm").addEventListener("submit", async (event) => {
       try {
+        event.preventDefault();
+        
         const searchInput = document.getElementById("searchInput").value;
         const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
         const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
@@ -205,8 +207,10 @@
     });
     
     // Filter dropdown menu event listeners
-    document.getElementById("filter-all").addEventListener("click", async () => {
+    document.getElementById("filter-all").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+
         const searchInput = document.getElementById("searchInput").value;
         const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
         
@@ -219,8 +223,10 @@
       }
     });
 
-    document.getElementById("filter-offered").addEventListener("click", async () => {
+    document.getElementById("filter-offered").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+
         const searchInput = document.getElementById("searchInput").value;
         const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
         
@@ -233,8 +239,10 @@
       }
     });
 
-    document.getElementById("filter-rejected").addEventListener("click", async () => {
+    document.getElementById("filter-rejected").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+
         const searchInput = document.getElementById("searchInput").value;
         const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
 
@@ -249,8 +257,10 @@
     });
 
     // Sort dropdown menu event listeners
-    document.getElementById("sort-by-recent").addEventListener("click", async () => {
+    document.getElementById("sort-by-recent").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+
         const searchInput = document.getElementById("searchInput").value;
         const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
 
@@ -264,8 +274,10 @@
       }
     });
 
-    document.getElementById("sort-by-liked").addEventListener("click", async () => {
+    document.getElementById("sort-by-liked").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+
         const searchInput = document.getElementById("searchInput").value;
         const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
 
@@ -279,8 +291,10 @@
       }
     });
 
-    document.getElementById("sort-by-difficulty").addEventListener("click", async () => {
+    document.getElementById("sort-by-difficulty").addEventListener("click", async (event) => {
       try {
+        event.preventDefault();
+        
         const searchInput = document.getElementById("searchInput").value;
         const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
 
