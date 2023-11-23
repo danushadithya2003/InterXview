@@ -299,8 +299,10 @@ router.get("/:companyId/experiences", async (req, res) => {
     try {
         if (req.session.user && req.cookies.user_sid) {
             const companyId = req.params.companyId;
-            const experiences = await experienceModel.find({ companyKey: companyId }).exec();
             const user = req.session.user
+
+            const experiences = await experienceModel.find({ companyKey: companyId }).exec();
+            
             res.render("experience", { experiences, user });
         } else {
             res.redirect("/signin");
@@ -334,7 +336,7 @@ router.post("/experiences/:experienceId/like", async (req, res) => {
             
             res.status(200).json({ liked: !hasLiked });
         } else {
-            res.status(401).json({ error: "Unauthorized" });
+            res.redirect("/signin");
         }
     } catch (error) {
         console.error(error);
@@ -345,65 +347,66 @@ router.post("/experiences/:experienceId/like", async (req, res) => {
 
 // Route for search, filter and sort functionality
 router.get("/search-control", async (req, res) => {
-    const user = req.session.user;
-    const searchBy = req.query.searchBy;
-
     try {
-        let searchResult = [];
+        if (req.session.user && req.cookies.user_sid) {
+            const user = req.session.user;
+            const searchBy = req.query.searchBy;
+            const searchTerm = req.query.searchTerm;
+        
+            let searchResult = [];
 
-        if (searchBy === "role") {
-            const searchTerm = req.query.role;
-            const filter = req.query.filter;
-            const sort = req.query.sort;
+            if (searchBy === "role") {
+                const filter = req.query.filter;
+                const sort = req.query.sort;
+                const companyID = req.query.companyID;
 
-            let filterQuery = { position: { $regex: searchTerm, $options: "i" } };
+                let filterQuery = { position: { $regex: searchTerm, $options: "i" } };
 
-            if (filter === "offered" || filter === "rejected") {
-                filterQuery.result = { $regex: filter, $options: "i" };
-            }
+                if (filter === "offered" || filter === "rejected") {
+                    filterQuery.result = { $regex: filter, $options: "i" };
+                }
 
-            switch (sort) {
-                case "recent":
-                    searchResult = await experienceModel.find(filterQuery).sort({ date: -1 }).lean();
-                    break;
-                
-                case "liked":
-                    searchResult = await experienceModel.aggregate([
-                        { $match: filterQuery },
-                        {
-                            $addFields: {
-                                likedByCount: { $size: "$likedBy" }
-                            }
-                        },
-                        { $sort: { likedByCount: -1 } }
-                    ]).exec();
-                    break;
+                if (companyID) {
+                    filterQuery.companyKey = companyID;
+                }
+
+                switch (sort) {
+                    case "recent":
+                        searchResult = await experienceModel.find(filterQuery).sort({ date: -1 }).lean();
+                        break;
                     
-                case "difficulty":
-                    const difficultyMap = {
-                        "🙂Easy": 1,
-                        "😯Intermediate": 2,
-                        "😡Hard": 3
-                    };
-                
-                    searchResult = await experienceModel.find(filterQuery).lean();
-                
-                    searchResult.sort((a, b) => difficultyMap[a.feedback] - difficultyMap[b.feedback]);
-                    break;
-                default:
-                    searchResult = await experienceModel.find(filterQuery).lean();
+                    case "liked":
+                        searchResult = await experienceModel.find(filterQuery).lean();
+
+                        searchResult.sort((a, b) => b.likedBy.length - a.likedBy.length);
+                        break;
+                        
+                    case "difficulty":
+                        const difficultyMap = {
+                            "🙂Easy": 1,
+                            "😯Intermediate": 2,
+                            "😡Hard": 3
+                        };
+                    
+                        searchResult = await experienceModel.find(filterQuery).lean();
+                    
+                        searchResult.sort((a, b) => difficultyMap[a.feedback] - difficultyMap[b.feedback]);
+                        break;
+                    default:
+                        searchResult = await experienceModel.find(filterQuery).lean();
+                }
+            } else if (searchBy === "company") {
+                searchResult = await companyModel.find({
+                    companyName: { $regex: searchTerm, $options: "i" }
+                }).lean();
+            } else {
+                return res.status(400).json({ error: "Invalid search parameter" });
             }
-        } else if (searchBy === "company") {
-            const searchTerm = req.query.companyName;
 
-            searchResult = await companyModel.find({
-                companyName: { $regex: searchTerm, $options: "i" }
-            }).lean();
+            res.status(200).json({ results: searchResult, userID: user._id });
         } else {
-            return res.status(400).json({ error: "Invalid search parameter" });
+            res.redirect("/signin");
         }
-
-        res.status(200).json({ results: searchResult, userID: user._id });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal Server Error" });

@@ -1,101 +1,114 @@
 <%- include("partials/header_1.ejs") %>
-  <h2 style="text-align: center">Welcome <%= user.username %>👋<br>Explore Interview Experiences 🙌</h2>
-  <div class="container mt-4">
-    <div class="row">
-      <div class="col">
-        <form action="">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search by Roles" aria-label="Search" aria-describedby="search-button">
-            <button class="btn btn-outline-primary" type="button" id="search-button">Search</button>
-          </div>
-        </form>
+<h2 style="text-align: center">Welcome <%= user.username %>👋<br>Explore Interview Experiences 🙌</h2>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col">
+      <form id="searchForm">
+        <div class="input-group mb-3">
+          <input id="searchInput" type="text" class="form-control" placeholder="Search by Roles" aria-label="Search" aria-describedby="search-button">
+          <button class="btn btn-outline-primary" type="submit" id="search-button">Search</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-auto">
+      <div class="btn-group" id="filterDropdown">
+        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          Filter
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item active" href="#" id="filter-all" filter-value="all">All</a></li>
+          <li><a class="dropdown-item" href="#" id="filter-offered" filter-value="offered">Offered</a></li>
+          <li><a class="dropdown-item" href="#" id="filter-rejected" filter-value="rejected">Rejected</a></li>
+        </ul>
       </div>
-  
-      <div class="col-auto">
-        <div class="btn-group">
-          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Filter
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">All</a></li>
-            <li><a class="dropdown-item" href="#">Offered</a></li>
-            <li><a class="dropdown-item" href="#">Rejected</a></li>
-          </ul>
-        </div>
-  
-        <div class="btn-group ms-2">
-          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Sort By
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">Most Recent</a></li>
-            <li><a class="dropdown-item" href="#">Most Liked</a></li>
-            <li><a class="dropdown-item" href="#">Difficulty</a></li>
-          </ul>
-        </div>
+
+      <div class="btn-group ms-2" id="sortDropdown">
+        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          Sort By
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item active" href="#" id="sort-by-recent" sort-value="recent">Most Recent</a></li>
+          <li><a class="dropdown-item" href="#" id="sort-by-liked" sort-value="liked">Most Liked</a></li>
+          <li><a class="dropdown-item" href="#" id="sort-by-difficulty" sort-value="difficulty">Difficulty</a></li>
+        </ul>
       </div>
     </div>
   </div>
-  <div class="experience-cards">
-    <% experiences.forEach(function(experience){ %>
-      <div class="experience-card-item-outer">
-        <div class="experience-card-item">
-          <div class="experience-card-item-header">
-            <h3 class="company-name"><%= experience.companyName %></h3>
-            <h6 class="company-result"><%= experience.result %></h6>
+</div>
+<div class="experience-cards">
+  <% experiences.forEach(function(experience){ %>
+    <div class="experience-card-item-outer">
+      <div class="experience-card-item">
+        <div class="experience-card-item-header">
+          <h3 class="company-name"><%= experience.companyName %></h3>
+          <h6 class="company-result"><%= experience.result %></h6>
+        </div>
+        <div class="experience-card-item-sub-header">
+          <h6 class="company-role"><%= experience.position %></h6>
+        </div>
+        <div class="experience-card-item-body">
+          <p><%= experience.content %></p>
+        </div>
+        <div class="experience-card-item-footer">
+          <div class="feedback-area">
+            <p><%= experience.feedback %></p>
+            <span>Difficulty</span>
           </div>
-          <div class="experience-card-item-sub-header">
-            <h6 class="company-role"><%= experience.position %></h6>
+          <div class="experience-date">
+            <p><%= experience.date %></p>
+            <span>Date</span>
           </div>
-          <div class="experience-card-item-body">
-            <p><%= experience.content %></p>
-          </div>
-          <div class="experience-card-item-footer">
-            <div class="feedback-area">
-              <p><%= experience.feedback %></p>
-              <span>Difficulty</span>
-            </div>
-            <div class="experience-date">
-              <p><%= experience.date %></p>
-              <span>Date</span>
-            </div>
-            <div class="experience-vote">
-              <p style="font-size: larger; border: none; cursor: pointer;" id="like-btn-<%= experience._id %>" class="like-button">
-                <%= experience.likedBy.includes(user._id) ? '🌟' : '⭐' %>
-              </p>              
-              <span id="like-count-<%= experience._id %>" class="like-count"><%= experience.likedBy.length %></span>
-            </div>
+          <div class="experience-vote">
+            <p style="font-size: larger; border: none; cursor: pointer;" id="like-btn-<%= experience._id %>" class="like-button">
+              <%= experience.likedBy.includes(user._id) ? '🌟' : '⭐' %>
+            </p>              
+            <span id="like-count-<%= experience._id %>" class="like-count"><%= experience.likedBy.length %></span>
           </div>
         </div>
       </div>
-    <% }) %>
-  </div>
-  <footer class="footer text-center">
-    <div class="container py-4">
-        <div class="row">
-            <div class="col-md-12">
-                <p class="footer-text">&copy; 2023 InterXview. All rights reserved.</p>
-            </div>
-        </div>
     </div>
-  </footer>
+  <% }) %>
+</div>
+<footer class="footer text-center">
+  <div class="container py-4">
+      <div class="row">
+          <div class="col-md-12">
+              <p class="footer-text">&copy; 2023 InterXview. All rights reserved.</p>
+          </div>
+      </div>
+  </div>
+</footer>
+
   <script>
+    async function postExperienceLike(experienceId) {
+    try {
+      const response = await fetch(`/experiences/${experienceId}/like`, {
+        method: 'POST',
+      });
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  function addLikeButtonListeners() {
     const likeButtons = document.querySelectorAll('.like-button');
-    const likeCounts = document.querySelectorAll('.like-count');
-  
+
     likeButtons.forEach((likebtn) => {
       likebtn.addEventListener('click', async () => {
         const experienceId = likebtn.id.split('-')[2];
-  
+
         const likeCountElement = document.getElementById(`like-count-${experienceId}`);
         if (likeCountElement) {
           const currentLikeCount = parseInt(likeCountElement.textContent, 10);
-  
+
           const newLikeCount = likebtn.innerText === '🌟' ? currentLikeCount - 1 : currentLikeCount + 1;
           likeCountElement.textContent = newLikeCount;
-  
+
           likebtn.innerText = likebtn.innerText === '🌟' ? '⭐' : '🌟';
-  
+
           try {
             const response = await postExperienceLike(experienceId);
             if (response.status !== 200) {
@@ -110,16 +123,194 @@
         }
       });
     });
-  
-    async function postExperienceLike(experienceId) {
+  }
+
+  function displayFilteredExperiences(experiences, userID) {
+    const experienceCardsContainer = document.querySelector(".experience-cards");
+    experienceCardsContainer.innerHTML = "";
+
+    experiences.forEach(experience => {
+      const experienceCardHTML = `
+        <div class="experience-card-item-outer">
+          <div class="experience-card-item">
+            <div class="experience-card-item-header">
+              <h3 class="company-name">${experience.companyName}</h3>
+              <h6 class="company-result">${experience.result}</h6>
+            </div>
+            <div class="experience-card-item-sub-header">
+              <h6 class="company-role">${experience.position}</h6>
+            </div>
+            <div class="experience-card-item-body">
+              <p>${experience.content}</p>
+            </div>
+            <div class="experience-card-item-footer">
+              <div class="feedback-area">
+                <p>${experience.feedback}</p>
+                <span>Difficulty</span>
+              </div>
+              <div class="experience-date">
+                <p>${experience.date}</p>
+                <span>Date</span>
+              </div>
+              <div class="experience-vote">
+                <p style="font-size: larger; border: none; cursor: pointer;" id="like-btn-${experience._id}" class="like-button">
+                  ${experience.likedBy.includes(userID) ? '🌟' : '⭐'}
+                </p>
+                <span id="like-count-${experience._id}" class="like-count">${experience.likedBy.length}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      experienceCardsContainer.insertAdjacentHTML("beforeend", experienceCardHTML);
+    });
+
+    addLikeButtonListeners();
+  }
+
+  async function searchControl(searchInput, activeFilterValue, activeSortValue) {
+    try {
+      const urlParts = window.location.pathname.split('/');
+      const companyID = urlParts[urlParts.length - 2];
+
+      response = await fetch(`/search-control?searchBy=role&searchTerm=${searchInput}&filter=${activeFilterValue}&sort=${activeSortValue}&companyID=${companyID}`);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return toastAlert({
+          icon: "error",
+          msg:  data.error,
+          position: "top"
+        }); 
+      }
+
+      displayFilteredExperiences(data.results, data.userID);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  document.addEventListener("DOMContentLoaded", (event) => {
+    addLikeButtonListeners();
+
+    // Search event listener
+    document.getElementById("searchForm").addEventListener("submit", async (event) => {
       try {
-        const response = await fetch(`/experiences/${experienceId}/like`, {
-          method: 'POST',
-        });
-        return response;
+        event.preventDefault();
+        
+        const searchInput = document.getElementById("searchInput").value;
+        const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
+        const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
+
+        await searchControl(searchInput, activeFilterValue, activeSortValue);
       } catch (error) {
         console.error(error);
-        throw error;
       }
-    }
-  </script>
+    });
+    
+    // Filter dropdown menu event listeners
+    document.getElementById("filter-all").addEventListener("click", async (event) => {
+      try {
+        event.preventDefault();
+
+        const searchInput = document.getElementById("searchInput").value;
+        const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
+        
+        document.getElementById("filterDropdown").querySelector(".dropdown-item.active").classList.remove("active");
+        document.getElementById("filter-all").classList.add("active");
+
+        await searchControl(searchInput, "all", activeSortValue);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    document.getElementById("filter-offered").addEventListener("click", async (event) => {
+      try {
+        event.preventDefault();
+
+        const searchInput = document.getElementById("searchInput").value;
+        const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
+        
+        document.getElementById("filterDropdown").querySelector(".dropdown-item.active").classList.remove("active");
+        document.getElementById("filter-offered").classList.add("active");
+
+        await searchControl(searchInput, "offered", activeSortValue);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    document.getElementById("filter-rejected").addEventListener("click", async (event) => {
+      try {
+        event.preventDefault();
+
+        const searchInput = document.getElementById("searchInput").value;
+        const activeSortValue = document.getElementById("sortDropdown").querySelector(".dropdown-item.active").getAttribute("sort-value");
+
+        
+        document.getElementById("filterDropdown").querySelector(".dropdown-item.active").classList.remove("active");
+        document.getElementById("filter-rejected").classList.add("active");
+
+        await searchControl(searchInput, "rejected", activeSortValue);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    // Sort dropdown menu event listeners
+    document.getElementById("sort-by-recent").addEventListener("click", async (event) => {
+      try {
+        event.preventDefault();
+
+        const searchInput = document.getElementById("searchInput").value;
+        const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
+
+        
+        document.getElementById("sortDropdown").querySelector(".dropdown-item.active").classList.remove("active");
+        document.getElementById("sort-by-recent").classList.add("active");
+
+        await searchControl(searchInput, activeFilterValue, "recent");
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    document.getElementById("sort-by-liked").addEventListener("click", async (event) => {
+      try {
+        event.preventDefault();
+
+        const searchInput = document.getElementById("searchInput").value;
+        const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
+
+        
+        document.getElementById("sortDropdown").querySelector(".dropdown-item.active").classList.remove("active");
+        document.getElementById("sort-by-liked").classList.add("active");
+
+        await searchControl(searchInput, activeFilterValue, "liked");
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    document.getElementById("sort-by-difficulty").addEventListener("click", async (event) => {
+      try {
+        event.preventDefault();
+        
+        const searchInput = document.getElementById("searchInput").value;
+        const activeFilterValue = document.getElementById("filterDropdown").querySelector(".dropdown-item.active").getAttribute("filter-value");
+
+        
+        document.getElementById("sortDropdown").querySelector(".dropdown-item.active").classList.remove("active");
+        document.getElementById("sort-by-difficulty").classList.add("active");
+
+        await searchControl(searchInput, activeFilterValue, "difficulty");
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  });
+</script>

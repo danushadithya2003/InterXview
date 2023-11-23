@@ -171,7 +171,7 @@
 
   async function searchControl(searchInput, activeFilterValue, activeSortValue) {
     try {
-      response = await fetch(`/search-control?searchBy=role&role=${searchInput}&filter=${activeFilterValue}&sort=${activeSortValue}`);
+      response = await fetch(`/search-control?searchBy=role&searchTerm=${searchInput}&filter=${activeFilterValue}&sort=${activeSortValue}`);
 
       const data = await response.json();
 
@@ -191,6 +191,8 @@
 
 
   document.addEventListener("DOMContentLoaded", (event) => {
+    addLikeButtonListeners();
+    
     // Search event listener
     document.getElementById("searchForm").addEventListener("submit", async (event) => {
       try {
@@ -307,7 +309,5 @@
         console.error(error);
       }
     });
-
-    addLikeButtonListeners();
   });
 </script>

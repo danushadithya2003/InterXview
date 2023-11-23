@@ -73,7 +73,7 @@
     const searchInput = document.getElementById("seachInput").value;
 
     try {
-      response = await fetch(`/search-control?searchBy=company&companyName=${searchInput}`);
+      response = await fetch(`/search-control?searchBy=company&searchTerm=${searchInput}`);
 
       const data = await response.json();
 
