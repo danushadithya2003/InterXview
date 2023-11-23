@@ -299,8 +299,10 @@ router.get("/:companyId/experiences", async (req, res) => {
     try {
         if (req.session.user && req.cookies.user_sid) {
             const companyId = req.params.companyId;
-            const experiences = await experienceModel.find({ companyKey: companyId }).exec();
             const user = req.session.user
+
+            const experiences = await experienceModel.find({ companyKey: companyId }).exec();
+            
             res.render("experience", { experiences, user });
         } else {
             res.redirect("/signin");
