@@ -347,22 +347,27 @@ router.post("/experiences/:experienceId/like", async (req, res) => {
 
 // Route for search, filter and sort functionality
 router.get("/search-control", async (req, res) => {
-    const user = req.session.user;
-    const searchBy = req.query.searchBy;
-
     try {
         if (req.session.user && req.cookies.user_sid) {
+            const user = req.session.user;
+            const searchBy = req.query.searchBy;
+            const searchTerm = req.query.searchTerm;
+        
             let searchResult = [];
 
             if (searchBy === "role") {
-                const searchTerm = req.query.role;
                 const filter = req.query.filter;
                 const sort = req.query.sort;
+                const companyID = req.query.companyID;
 
                 let filterQuery = { position: { $regex: searchTerm, $options: "i" } };
 
                 if (filter === "offered" || filter === "rejected") {
                     filterQuery.result = { $regex: filter, $options: "i" };
+                }
+
+                if (companyID) {
+                    filterQuery.companyKey = companyID;
                 }
 
                 switch (sort) {
@@ -371,15 +376,9 @@ router.get("/search-control", async (req, res) => {
                         break;
                     
                     case "liked":
-                        searchResult = await experienceModel.aggregate([
-                            { $match: filterQuery },
-                            {
-                                $addFields: {
-                                    likedByCount: { $size: "$likedBy" }
-                                }
-                            },
-                            { $sort: { likedByCount: -1 } }
-                        ]).exec();
+                        searchResult = await experienceModel.find(filterQuery).lean();
+
+                        searchResult.sort((a, b) => b.likedBy.length - a.likedBy.length);
                         break;
                         
                     case "difficulty":
@@ -397,8 +396,6 @@ router.get("/search-control", async (req, res) => {
                         searchResult = await experienceModel.find(filterQuery).lean();
                 }
             } else if (searchBy === "company") {
-                const searchTerm = req.query.companyName;
-
                 searchResult = await companyModel.find({
                     companyName: { $regex: searchTerm, $options: "i" }
                 }).lean();
