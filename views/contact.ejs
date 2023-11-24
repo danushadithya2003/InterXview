@@ -6,15 +6,15 @@
 <h2 id="login_heading"> Contact us👋</h2>
 <div class="login-container">
   <div class="login user_login">
-    <form method="post" action="/signin">
+    <form id="contactForm">
       <div class="mb-3">
         <label for="email"  class="form-label">Email</label>
-        <input type="text" name="email" class="form-control" autocomplete="off" id="username" aria-describedby="emailHelp">
+        <input type="text" name="email" class="form-control" autocomplete="off" id="email" aria-describedby="emailHelp">
       </div>
 
       <div class="mb-3">
         <label for="password" class="form-label">What can we help with?</label>
-        <textarea class="form-control" id=feedback" rows="3"></textarea>
+        <textarea class="form-control" id="feedback" rows="3"></textarea>
       </div>
       <div class="signin-forgot">
         <a href="mailto:interxview@gmail.com"><button type="submit" class="btn btn-primary">Send us</button></a>
@@ -32,3 +32,43 @@
       </div>
   </div>
 </footer>
+
+<script>
+  document.getElementById("contactForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const feedback = document.getElementById("feedback").value;
+
+    const reqBody = {
+      email: email,
+      feedback: feedback
+    }
+
+    await fetch("/contact", {
+      method: "POST",
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(reqBody)
+    })
+    .then(response => {
+      if (!response.ok) {
+        response.text().then(msg => {
+          toastAlert({
+            icon: "error",
+            msg: msg,
+            position: "top"
+          });  
+        })
+      } else {
+        response.text().then(msg => {
+          Swal.fire({
+            text: msg,
+            icon: "success"
+          });
+        })
+      }
+    })
+  });
+</script>
