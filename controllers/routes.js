@@ -36,15 +36,52 @@ router.get("/", sessionChecker, (req, res) => {
 });
 
 
+// Route for about page
 router.get("/about",async (req, res) => {
     const user = req.session.user
     res.render("about", { user });
 });
 
-router.get("/contact", (req, res) => {
-    const user = req.session.user
-    res.render("contact", { user });
-});
+
+// Routes for contact us page
+router.route("/contact")
+    .get(async (req, res) => {
+        const user = req.session.user
+        res.render("contact", { user });
+    })
+    .post(async (req, res) => {
+        const {email, feedback} = req.body;
+
+        try {
+            if (!emailValidator.isEmail(email)) {
+                res.status(401).send("Invalid email");
+                return;
+            }
+
+            const transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: process.env.TRANSPORT_EMAIL,
+                    pass: process.env.TRANSPORT_EMAIL_PASSWORD
+                }
+            });
+
+            const mailOptions = {
+                from: process.env.TRANSPORT_EMAIL,
+                to: process.env.TRANSPORT_EMAIL,
+                subject: "Feedback Submission",
+                text: `Email: ${email}\nFeedback: ${feedback}`
+            };
+
+            await transporter.sendMail(mailOptions);
+
+            res.status(200).send("We have received your feedback. Rest assured, our team will contact you shortly")
+        } catch (err) {
+            console.error(err);
+            res.status(500).send(err);
+        }
+    });
+
 
 // Routes for user sign-up
 router.route("/signup")
