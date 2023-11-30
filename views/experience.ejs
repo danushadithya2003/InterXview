@@ -141,7 +141,7 @@
               <h6 class="company-role">${experience.position}</h6>
             </div>
             <div class="experience-card-item-body">
-              <p>${experience.content}</p>
+              <p>${experience.content.replace(/\r\n/g, '<br>')}</p>
             </div>
             <div class="experience-card-item-footer">
               <div class="feedback-area">
