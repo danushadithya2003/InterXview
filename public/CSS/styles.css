@@ -524,6 +524,7 @@ img {
   background-color: #0064fe !important;
   margin: 0 !important;
   text-align: center;
+  z-index: 1000;
 }
 
 #about {
